@@ -1,6 +1,8 @@
 ﻿
 namespace DEV_1
 {
+    using System;
+
     /// <summary>
     /// class that finds and prints combinations of non-repeating symbols.
     /// </summary>
@@ -26,32 +28,40 @@ namespace DEV_1
         /// <returns>Returns a string in which unique characters are separated by a space.</returns>
         public string GetUniqueSymbolsSequence()
         {
-            int startUniqueSymbolIndex = 0;
             string uniqueSymbolsSequence = string.Empty;
+            string moreThanTwoLetters = string.Empty;
 
-            for (var i = 0; i < this.Enterstirng.Length - 1; i++)
+            for (var i = 1; i < this.Enterstirng.Length - 1; i++)
             {
-                if (this.Enterstirng[i] == this.Enterstirng[i + 1])
+                
+                if (this.Enterstirng[i - 1] != this.Enterstirng[i])
                 {
-                    for (var j = startUniqueSymbolIndex; j < i; j++)
+                    // remember 2 different characters, if the following comparison is successful, then add one more character to this string
+                    if (moreThanTwoLetters.Length == 0)
                     {
-                        uniqueSymbolsSequence += this.Enterstirng[j];
+                        moreThanTwoLetters += this.Enterstirng[i - 1];
+                        moreThanTwoLetters += this.Enterstirng[i];
                     }
+                    else
+                    {
+                        moreThanTwoLetters += this.Enterstirng[i];
+                    }
+                    
+                    uniqueSymbolsSequence += this.Enterstirng[i - 1];
+                    uniqueSymbolsSequence += this.Enterstirng[i] + " ";
+                }
+                else
+                {
+                    moreThanTwoLetters = string.Empty;
 
-                    // add a space for future string parsing
-                    uniqueSymbolsSequence += " ";
-                    startUniqueSymbolIndex = i + 1;
                 }
-                else if (i == this.Enterstirng.Length - 2)
+
+                if (moreThanTwoLetters.Length > 2)
                 {
-                    for (var j = startUniqueSymbolIndex; j < i + 2; j++)
-                    {
-                        uniqueSymbolsSequence += this.Enterstirng[j];
-                    }
-                    uniqueSymbolsSequence += " ";
+                    uniqueSymbolsSequence += moreThanTwoLetters + " ";
                 }
+
             }
-
             return uniqueSymbolsSequence;
         }
     }

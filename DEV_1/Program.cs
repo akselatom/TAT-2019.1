@@ -16,7 +16,7 @@ namespace DEV_1
         /// <param name="args">Entry string.Specified in the input argument string</param>
         public static void Main(string[] args)
         {
-            var inputString = args[0];
+            string inputString = args[0];
             var testClass = new UniqueSymbols { Enterstirng = inputString };
             if (testClass.CheckStringLength())
             {

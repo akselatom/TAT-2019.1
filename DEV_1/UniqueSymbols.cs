@@ -31,7 +31,7 @@ namespace DEV_1
             string uniqueSymbolsSequence = string.Empty;
             string moreThanTwoLetters = string.Empty;
 
-            for (var i = 1; i < this.Enterstirng.Length - 1; i++)
+            for (var i = 1; i < this.Enterstirng.Length; i++)
             {
                 
                 if (this.Enterstirng[i - 1] != this.Enterstirng[i])

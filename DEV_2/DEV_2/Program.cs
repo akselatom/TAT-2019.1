@@ -10,6 +10,10 @@ namespace DEV_2
     {
         static void Main(string[] args)
         {
+            string inputString = Console.ReadLine();
+            var test = new RussianPhoneticDictionary();
+            Console.WriteLine(test.ProcessingVowelsIntoSounds(inputString));
+            Console.WriteLine(test.VoicingOrStunningConsonants(inputString));
         }
     }
 }

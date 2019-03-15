@@ -2,14 +2,16 @@
 namespace DEV_2
 {
     using System.Collections.Generic;
-    using System.Linq;
 
-    class RussianPhoneticDictionary
+    /// <summary>
+    /// The russian phoneme dictionary.
+    /// </summary>
+    public static class RussianDictionary
     {
         /// <summary>
         /// A dictionary containing all possible soft consonants variants, except always soft consonants.
         /// </summary>
-        public readonly Dictionary<string, string> AllSoftSounds = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> AllSoftSounds = new Dictionary<string, string>()
                                                                        {
                                                                            { "би", "б'и" },
                                                                            { "ви", "в'и" },
@@ -91,7 +93,7 @@ namespace DEV_2
         /// <summary>
         /// dictionary containing all vowels sounds.
         /// </summary>
-        public readonly Dictionary<string, string> VowelsLettersToPhoneticSounds = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> VowelsLettersToPhoneticSounds = new Dictionary<string, string>()
                                                                                        {
                                                                                            { "Е", "йэ" },
                                                                                            { "Ё", "йо" },
@@ -145,8 +147,11 @@ namespace DEV_2
                                                                                            { "эю", "эйу" },
                                                                                            { "эя", "эйа" },
                                                                                        };
-
-        public readonly Dictionary<char, char> VoicingAndStunningConsonants = new Dictionary<char, char>()
+        
+        /// <summary>
+        /// Dictionary of deaf and voiced sounds
+        /// </summary>
+        public static readonly Dictionary<char, char> VoicingAndStunningConsonants = new Dictionary<char, char>()
                                                                                   {
                                                                                       { 'б', 'п' },
                                                                                       { 'в', 'ф' },
@@ -154,99 +159,6 @@ namespace DEV_2
                                                                                       { 'д', 'т' },
                                                                                       { 'ж', 'ш' },
                                                                                       { 'з', 'с' },
-                                                                                      { 'л', 'Л' },
-                                                                                      { 'м', 'М' },
-                                                                                      { 'н', 'Н' },
-                                                                                      { 'р', 'Р' },
-                                                                                      { 'й', 'Й' },
-                                                                                      { 'Х', 'x' },
-                                                                                      { 'Ц', 'ц' },
-                                                                                      { 'Ч', 'ч' },
-                                                                                      { 'Щ', 'щ' },
-                                                                                  };
-
-        /// <summary>
-        /// The first letter to upper case.
-        /// </summary>
-        /// <param name="inputString">
-        /// The input string.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        private string FirstLetterToUpperCase(string inputString)
-        {
-            return (string)(inputString.Remove(1, inputString.Length - 1)).ToUpper() + inputString.Remove(0, 1);
-        }
-
-        /// <summary>
-        /// The replacement unstressed o.
-        /// </summary>
-        /// <param name="inputString">
-        /// The input string.
-        /// </param>
-        /// <returns>
-        /// Returns string were all unstressed O replaced by A
-        /// </returns>
-        public string ReplacementUnstressedO(string inputString)
-        {
-            inputString = inputString.Replace('о', 'а');
-            inputString = inputString.Replace("а+", "о+");
-            inputString = inputString.Replace("+", string.Empty);
-
-            return inputString;
-        }
-
-        /// <summary>
-        /// The processing vowels into sounds.
-        /// </summary>
-        /// <param name="inputString">
-        /// The input string.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public string ProcessingVowelsIntoSounds(string inputString)
-        {
-            inputString = ReplacementUnstressedO(inputString);
-            string tempString = FirstLetterToUpperCase(inputString);
-            bool firstIteration = true;
-            foreach (var keys in this.AllSoftSounds.Keys)
-            {
-                if (tempString.Contains(keys))
-                {
-                    string replasestring = this.AllSoftSounds[keys];
-                    tempString = tempString.Replace(keys, replasestring);
-                }
-            }
-
-            foreach (var keys in this.VowelsLettersToPhoneticSounds.Keys)
-            {
-                //// checking the case when the vowel comes first
-                if (firstIteration)
-                {
-                    string replasestring = this.VowelsLettersToPhoneticSounds[keys];
-                    tempString = tempString.Replace(keys, replasestring);
-                    firstIteration = false;
-                }
-                else if (tempString.Contains(keys))
-                {
-                    
-                    string replasestring = this.VowelsLettersToPhoneticSounds[keys];
-                    tempString = tempString.Replace(keys, replasestring);
-                }
-            }
-
-            return tempString;
-        }
-
-        public string VoicingOrStunningConsonants(string inputString)
-        {
-            bool voicingLetter = false;
-            bool stunningLetter = false;
-
-
-            return inputString;
-        }
+                                                                                  }; 
     }
 }

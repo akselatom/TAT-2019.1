@@ -50,6 +50,22 @@
         {
             return null;
         }
+
+        protected int FindMostEfficiencyEmployeeIndex(List<Junior> list)
+        {
+            double max = list[0].GetEfficiencyCoefficient;
+            int index = 0;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (max < list[i].GetEfficiencyCoefficient)
+                {
+                    max = list[i].GetEfficiencyCoefficient;
+                    index = i;
+                }
+            }
+
+            return index;
+        }
     }
     
     /// <summary>
@@ -106,15 +122,81 @@
         /// <returns>
         /// returns the index of the most efficient employee
         /// </returns>
-        private int FindMostEfficiencyEmployeeIndex(List<Junior> list)
+        
+    }
+
+    public class SecondCriteria: SelectionCriteria
+    {
+        public SecondCriteria(Company company, Customer customer)
+            : base(company, customer)
         {
-            double max = list[0].GetEfficiencyCoefficient;
+        }
+
+        public override List<Employee> CustomerCriteria()
+        {
+            int balance = this.GetCustomer.GetAvailableMoney;
+            List<Employee> newTeamList = new List<Employee>();
+            List<Junior> companyEmployeeList = this.GetCompany.GetCompanyEmployeesList;
+            int requiredProductivity = this.GetCustomer.GetRequiredProductivity;
+            int currentProductivity = 0;
+            int expenses = 0;
+            while (requiredProductivity >= currentProductivity)
+            {
+                int index = this.FindMostEfficiencyEmployeeIndex(companyEmployeeList);
+                if (companyEmployeeList[index].GetSalary < balance)
+                {
+                    newTeamList.Add(companyEmployeeList[index]);
+                    currentProductivity += companyEmployeeList[index].GetProductivity;
+                    //expenses += companyEmployeeList[index].GetSalary;
+                    companyEmployeeList.RemoveAt(index);
+                }
+                else
+                {
+                    companyEmployeeList.RemoveAt(index);
+                }
+            }
+
+            return newTeamList;
+
+        }
+    }
+
+    public class ThirdCriteria: SelectionCriteria
+    {
+        public ThirdCriteria(Company company, Customer customer)
+            : base(company, customer)
+        {
+        }
+
+        public override List<Employee> CustomerCriteria()
+        {
+
+            List<Employee> newTeamList = new List<Employee>();
+            List<Junior> companyEmployeeList = this.GetCompany.GetCompanyEmployeesList;
+            int requiredProductivity = this.GetCustomer.GetRequiredProductivity;
+            int currentProductivity = 0;
+            while (currentProductivity <= requiredProductivity)
+            {
+                int index = this.GetMaxProductivityEmployeeIndex(companyEmployeeList);
+                newTeamList.Add(companyEmployeeList[index]);
+                currentProductivity += companyEmployeeList[index].GetProductivity;
+                companyEmployeeList.RemoveAt(index);
+
+            }
+
+            return newTeamList;
+        }
+
+        private int GetMaxProductivityEmployeeIndex(List<Junior> list)
+        {
             int index = 0;
+
+            int maxProductivity = list[index].GetProductivity;
             for (int i = 0; i < list.Count; i++)
             {
-                if (max < list[i].GetEfficiencyCoefficient)
+                if (maxProductivity < list[i].GetProductivity)
                 {
-                    max = list[i].GetEfficiencyCoefficient;
+                    maxProductivity = list[i].GetProductivity;
                     index = i;
                 }
             }

@@ -49,6 +49,11 @@
                 return this.firstName +" "+ this.secondName;
             }
         }
+
+        public virtual string GetInfo()
+        {
+            return this.GetName;
+        }
     }
 
     /// <summary>
@@ -79,7 +84,7 @@
         public Junior()
         {
             this.salary = 50;
-            this.productivity = 10;
+            this.productivity = 15;
         }
 
         /// <summary>
@@ -95,7 +100,7 @@
             : base(firstName, secondName)
         {
             this.salary = 50;
-            this.productivity = 10;
+            this.productivity = 15;
         }
 
         /// <summary>
@@ -187,7 +192,7 @@
     {
         public Lead()
         {
-            this.salary = 120;
+            this.salary = 180;
             this.productivity = 50;
         }
 
@@ -203,7 +208,7 @@
         public Lead(string firstName = "test", string secondName = "test")
             : base(firstName, secondName)
         {
-            this.salary = 120;
+            this.salary = 180;
             this.productivity = 50;
         }
 

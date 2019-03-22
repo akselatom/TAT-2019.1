@@ -54,7 +54,7 @@
             this.customer = customer;
         }
 
-        public virtual List<Employee> CustomerCriteria()
+        public virtual List<Employee> SearchByCustomerCriteria()
         {
             return null;
         }
@@ -110,7 +110,7 @@
         /// <returns>
         /// <returns>Returns a <see cref="List{T}"/> of <see cref="Employee"/> with a with a maximum performance within the sum</returns>
         /// </returns>
-        public override List<Employee> CustomerCriteria()
+        public override List<Employee> SearchByCustomerCriteria()
         {
             int balance = this.GetCustomer.GetAvailableMoney;
             List<Employee> newTeamList = new List<Employee>();
@@ -160,7 +160,7 @@
         /// Creates a new <see cref="List{T}"/> of <see cref="Employee"/>, based on the list of employees of the <see cref="Company"/>
         /// </summary>
         /// <returns>Returns a list of employees with a given performance and minimum cost</returns>
-        public override List<Employee> CustomerCriteria()
+        public override List<Employee> SearchByCustomerCriteria()
         {
             int balance = this.GetCustomer.GetAvailableMoney;
             List<Employee> newTeamList = new List<Employee>();
@@ -212,14 +212,14 @@
         /// <returns>
         /// Returns a list of employees with a given performance and minimum number of employees.
         /// </returns>
-        public override List<Employee> CustomerCriteria()
+        public override List<Employee> SearchByCustomerCriteria()
         {
 
             List<Employee> newTeamList = new List<Employee>();
             List<Junior> companyEmployeeList = new List<Junior>(this.GetCompany.GetCompanyEmployeesList);
             int requiredProductivity = this.GetCustomer.GetRequiredProductivity;
             int currentProductivity = 0;
-            while (currentProductivity <= requiredProductivity)
+            while (currentProductivity < requiredProductivity)
             {
                 ////finds the index of the most productive employee of the company, adds it to the newTeamList
                 int index = this.GetMaxProductivityEmployeeIndex(companyEmployeeList);

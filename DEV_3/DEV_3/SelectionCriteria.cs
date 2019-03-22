@@ -1,8 +1,10 @@
 ﻿namespace DEV_3
 {
     using System.Collections.Generic;
-    using System.Linq;
 
+    /// <summary>
+    /// Gives a <see cref="List{T}"/>of <see cref="Employee"/> depending on <see cref="Customer"/> requirements
+    /// </summary>
     public abstract class SelectionCriteria
     {
         /// <summary>
@@ -15,6 +17,9 @@
         /// </summary>
         private Company company;
 
+        /// <summary>
+        /// Gets the customer.
+        /// </summary>
         public Customer GetCustomer
         {
             get
@@ -23,6 +28,9 @@
             }
         }
 
+        /// <summary>
+        /// Gets the company.
+        /// </summary>
         public Company GetCompany
         {
             get
@@ -51,6 +59,15 @@
             return null;
         }
 
+        /// <summary>
+        /// finds a <see cref="Employee"/> with maximum efficiency in the input list
+        /// </summary>
+        /// <param name="list">
+        /// The list.
+        /// </param>
+        /// <returns>
+        /// Returns the index of the most efficiency <see cref="Employee"/>
+        /// </returns>
         protected int FindMostEfficiencyEmployeeIndex(List<Junior> list)
         {
             double max = list[0].GetEfficiencyCoefficient;
@@ -87,6 +104,12 @@
         {
         }
 
+        /// <summary>
+        /// Creates a new <see cref="List{T}"/> of <see cref="Employee"/>, based on the list of employees of the <see cref="Company"/>
+        /// </summary>
+        /// <returns>
+        /// <returns>Returns a <see cref="List{T}"/> of <see cref="Employee"/> with a with a maximum performance within the sum</returns>
+        /// </returns>
         public override List<Employee> CustomerCriteria()
         {
             int balance = this.GetCustomer.GetAvailableMoney;
@@ -111,35 +134,39 @@
                 }
             }
             return newTeamList;
-        }
-
-        /// <summary>
-        /// find the most efficiency employee index.
-        /// </summary>
-        /// <param name="list">
-        /// list of employees
-        /// </param>
-        /// <returns>
-        /// returns the index of the most efficient employee
-        /// </returns>
-        
+        }        
     }
 
+    /// <summary>
+    /// Minimum cost with fixed productivity.
+    /// </summary>
     public class SecondCriteria: SelectionCriteria
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecondCriteria"/> class.
+        /// </summary>
+        /// <param name="company">
+        /// The company.
+        /// </param>
+        /// <param name="customer">
+        /// The customer.
+        /// </param>
         public SecondCriteria(Company company, Customer customer)
             : base(company, customer)
         {
         }
 
+        /// <summary>
+        /// Creates a new <see cref="List{T}"/> of <see cref="Employee"/>, based on the list of employees of the <see cref="Company"/>
+        /// </summary>
+        /// <returns>Returns a list of employees with a given performance and minimum cost</returns>
         public override List<Employee> CustomerCriteria()
         {
             int balance = this.GetCustomer.GetAvailableMoney;
             List<Employee> newTeamList = new List<Employee>();
-            List<Junior> companyEmployeeList = this.GetCompany.GetCompanyEmployeesList;
+            List<Junior> companyEmployeeList = new List<Junior>(this.GetCompany.GetCompanyEmployeesList);
             int requiredProductivity = this.GetCustomer.GetRequiredProductivity;
             int currentProductivity = 0;
-            int expenses = 0;
             while (requiredProductivity >= currentProductivity)
             {
                 int index = this.FindMostEfficiencyEmployeeIndex(companyEmployeeList);
@@ -147,7 +174,6 @@
                 {
                     newTeamList.Add(companyEmployeeList[index]);
                     currentProductivity += companyEmployeeList[index].GetProductivity;
-                    //expenses += companyEmployeeList[index].GetSalary;
                     companyEmployeeList.RemoveAt(index);
                 }
                 else
@@ -161,25 +187,45 @@
         }
     }
 
+    /// <summary>
+    /// Minimum number of staff qualifications above Junior for fixed productivity.
+    /// </summary>
     public class ThirdCriteria: SelectionCriteria
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThirdCriteria"/> class.
+        /// </summary>
+        /// <param name="company">
+        /// The company.
+        /// </param>
+        /// <param name="customer">
+        /// The customer.
+        /// </param>
         public ThirdCriteria(Company company, Customer customer)
             : base(company, customer)
         {
         }
 
+        /// <summary>
+        /// Creates a new list of employees, based on the list of employees of the <see cref="Company"/>
+        /// </summary>
+        /// <returns>
+        /// Returns a list of employees with a given performance and minimum number of employees.
+        /// </returns>
         public override List<Employee> CustomerCriteria()
         {
 
             List<Employee> newTeamList = new List<Employee>();
-            List<Junior> companyEmployeeList = this.GetCompany.GetCompanyEmployeesList;
+            List<Junior> companyEmployeeList = new List<Junior>(this.GetCompany.GetCompanyEmployeesList);
             int requiredProductivity = this.GetCustomer.GetRequiredProductivity;
             int currentProductivity = 0;
             while (currentProductivity <= requiredProductivity)
             {
+                ////finds the index of the most productive employee of the company, adds it to the newTeamList
                 int index = this.GetMaxProductivityEmployeeIndex(companyEmployeeList);
                 newTeamList.Add(companyEmployeeList[index]);
                 currentProductivity += companyEmployeeList[index].GetProductivity;
+                ////removes employee from companyEmployeeList
                 companyEmployeeList.RemoveAt(index);
 
             }
@@ -187,6 +233,11 @@
             return newTeamList;
         }
 
+        /// <summary>
+        /// finds a <see cref="Employee"/> with maximum productivity in the input list
+        /// </summary>
+        /// <param name="list">Input <see cref="Junior"/> list </param>
+        /// <returns>returns the index of the most productive <see cref="Employee"/></returns>
         private int GetMaxProductivityEmployeeIndex(List<Junior> list)
         {
             int index = 0;
@@ -196,8 +247,11 @@
             {
                 if (maxProductivity < list[i].GetProductivity)
                 {
-                    maxProductivity = list[i].GetProductivity;
-                    index = i;
+                    if (list[i].GetType() != typeof(Junior))
+                    {
+                        maxProductivity = list[i].GetProductivity;
+                        index = i;
+                    }
                 }
             }
 

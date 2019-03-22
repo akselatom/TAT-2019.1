@@ -1,5 +1,7 @@
 ﻿namespace DEV_3
 {
+    using System.Text;
+
     /// <summary>
     /// The employee.
     /// </summary>
@@ -50,9 +52,17 @@
             }
         }
 
+        /// <summary>
+        /// All <see cref="Employee"/> field information
+        /// </summary>
+        /// <returns>Format string with <see cref="Employee"/> information</returns>
         public virtual string GetInfo()
         {
-            return this.GetName;
+            StringBuilder outputString = new StringBuilder();
+            outputString.AppendFormat(this.GetName);
+            outputString.Append(" ");
+            outputString.AppendFormat(this.GetType().ToString().Substring(this.GetType().ToString().LastIndexOf('.')));
+            return outputString.ToString();
         }
     }
 
@@ -71,13 +81,6 @@
         /// </summary>
         protected int productivity;
 
-        public double GetEfficiencyCoefficient
-        {
-            get
-            {
-                return this.productivity / (double)this.salary;
-            }
-        }
         /// <summary>
         /// Initializes a new instance of the <see cref="Junior"/> class.
         /// </summary>
@@ -115,6 +118,17 @@
         }
 
         /// <summary>
+        /// Gets the efficiency coefficient.
+        /// </summary>
+        public double GetEfficiencyCoefficient
+        {
+            get
+            {
+                return this.productivity / (double)this.salary;
+            }
+        }
+
+        /// <summary>
         /// Gets the productivity.
         /// </summary>
         public int GetProductivity
@@ -125,7 +139,19 @@
             }
         }
 
-
+        /// <summary>
+        /// All <see cref="Junior"/> field information
+        /// </summary>
+        /// <returns>Format string with <see cref="Junior"/> information</returns>
+        public override string GetInfo()
+        {
+            StringBuilder outputString = new StringBuilder();
+            outputString.AppendFormat(this.GetName);
+            outputString.Append(" ");
+            outputString.AppendFormat(this.GetType().ToString().Substring(this.GetType().ToString().LastIndexOf('.')));
+            outputString.AppendFormat(" Productivity:{0} , Salary:{1}", this.GetProductivity, this.GetSalary);
+            return outputString.ToString();
+        }
     }
 
     /// <inheritdoc />
@@ -134,6 +160,9 @@
     /// </summary>
     public class Middle : Junior
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Middle"/> class.
+        /// </summary>
         public Middle()
         {
             this.salary = 75;
@@ -162,6 +191,9 @@
     /// </summary>
     public class Senior : Middle
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Senior"/> class.
+        /// </summary>
         public Senior()
         {
             this.salary = 100;
@@ -190,6 +222,9 @@
     /// </summary>
     public class Lead : Senior
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lead"/> class.
+        /// </summary>
         public Lead()
         {
             this.salary = 180;
@@ -210,9 +245,6 @@
         {
             this.salary = 180;
             this.productivity = 50;
-        }
-
-        
+        }   
     }
-
 }

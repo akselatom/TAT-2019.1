@@ -9,17 +9,13 @@ namespace DEV_3
         static void Main(string[] args)
         {
             Company newCompany = new Company();
-            Customer newCustomer = new Customer(200, 100);
+            Customer newCustomer = new Customer(200, 150);
             SelectionCriteria newCriteria = new ThirdCriteria(newCompany, newCustomer);
             foreach (var employee in newCriteria.CustomerCriteria())
             {
-                StringBuilder consoleOutputString = new StringBuilder();
-                consoleOutputString.AppendFormat(employee.GetName);
-                consoleOutputString.Append(" ");
-                consoleOutputString.AppendFormat(
-                    employee.GetType().ToString().Substring(employee.GetType().ToString().LastIndexOf('.')));
-                Console.WriteLine(consoleOutputString);
+                Console.WriteLine(employee.GetInfo());
             }
+            
         }
     }
 }

@@ -34,17 +34,25 @@
         private int juniorEmployeeCount = 8;
 
         /// <summary>
+        /// The company employees list.
+        /// </summary>
+        private List<Junior> companyEmployeesList;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Company"/> class.
         /// </summary>
         public Company()
         {
-            this.GetCompanyEmployeesList = new List<Junior>();
+            this.companyEmployeesList = new List<Junior>();
             this.FillingOutList(this.leadEmployeeCount, typeof(Lead));
             this.FillingOutList(this.seniorEmployeeCount, typeof(Senior));
             this.FillingOutList(this.middleEmployeeCount, typeof(Middle));
             this.FillingOutList(this.juniorEmployeeCount, typeof(Junior));
         }
 
+        /// <summary>
+        /// Gets the number of employees.
+        /// </summary>
         public int GetNumberOfEmployees
         {
             get
@@ -56,11 +64,26 @@
         /// <summary>
         /// Gets the company employees list.
         /// </summary>
-        public List<Junior> GetCompanyEmployeesList { get; private set; }
-
-        private void FillingOutList(int criteria,Type type)
+        public List<Junior> GetCompanyEmployeesList
         {
-            for (int i = 0; i < criteria; i++)
+            get
+            {
+                return this.companyEmployeesList;
+            }
+        }
+
+        /// <summary>
+        /// Filling the list with objects.
+        /// </summary>
+        /// <param name="amount">
+        /// Required number of objects
+        /// </param>
+        /// <param name="type">
+        /// Required object type.
+        /// </param>
+        private void FillingOutList(int amount,Type type)
+        {
+            for (int i = 0; i < amount; i++)
             {
                 this.GetCompanyEmployeesList.Add(this.GetInstance<Junior>(type.ToString()));
                 NumberOfEmployees++;
@@ -68,6 +91,12 @@
 
         }
 
+        /// <summary>
+        /// creates an instance of an object depending on the specified <see cref="Type"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">Object <see cref="Type"/> </param>
+        /// <returns>Returns object of Employee class</returns>
         private T GetInstance<T>(string type)
         {
             object[] args = { "Company", " Employee" + NumberOfEmployees };

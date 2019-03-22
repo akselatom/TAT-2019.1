@@ -1,6 +1,5 @@
 ﻿namespace DEV_3
 {
-    using System.Collections.Generic;
 
     /// <summary>
     /// The сustomer.
@@ -17,7 +16,6 @@
         /// </summary>
         private int requiredProductivity;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Customer"/> class.
         /// </summary>
@@ -26,12 +24,16 @@
         /// </param>
         /// <param name="requiredProductivity">
         /// The required productivity.
+        /// </param>
         public Customer(int availableMoney, int requiredProductivity)
         {
             this.availableMoney = availableMoney;
             this.requiredProductivity = requiredProductivity;
         }
-        
+
+        /// <summary>
+        /// Gets the available money.
+        /// </summary>
         public int GetAvailableMoney
         {
             get
@@ -40,6 +42,9 @@
             }
         }
 
+        /// <summary>
+        /// Gets the required productivity.
+        /// </summary>
         public int GetRequiredProductivity
         {
             get

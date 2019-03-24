@@ -25,15 +25,6 @@ namespace DEV_1
         }
 
         /// <summary>
-        /// Check string for length
-        /// </summary>
-        /// <returns>Returns true if string length more than 1</returns>
-        public bool CheckStringLength()
-        {
-            return this.inputString.Length >= 2;
-        }
-
-        /// <summary>
         /// a method that finds unique symbols in a string
         /// </summary>
         /// <returns>Returns a string in which unique characters are separated by a space.</returns>
@@ -44,7 +35,6 @@ namespace DEV_1
 
             for (var i = 1; i < this.inputString.Length; i++)
             {
-                
                 if (this.inputString[i - 1] != this.inputString[i])
                 {
                     //// remember 2 different characters, if the following comparison is successful, then add one more character to this string
@@ -65,15 +55,14 @@ namespace DEV_1
                 {
                     ////clear a string after coincidence of characters
                     moreThanTwoLettersSequence.Clear();
-
                 }
 
                 if (moreThanTwoLettersSequence.Length > 2)
                 {
                     uniqueSymbolsSequence += moreThanTwoLettersSequence + " ";
                 }
-
             }
+
             return uniqueSymbolsSequence;
         }
     }

@@ -9,7 +9,6 @@ namespace DEV_1
     /// </summary>
     public class Dev1
     {
-
         /// <summary>
         /// The entry point of the program
         /// </summary>
@@ -18,9 +17,9 @@ namespace DEV_1
         {
             try
             {
-                var testClass = new UniqueSymbolsFinder(args[0]);
-                if (testClass.CheckStringLength())
+                if (args.Length != 0 && args[0].Length > 1)
                 {
+                    var testClass = new UniqueSymbolsFinder(args[0]);
                     foreach (var uniqueSymbols in testClass.GetUniqueSymbolsSequence().Split())
                     {
                         Console.WriteLine(uniqueSymbols);
@@ -28,10 +27,10 @@ namespace DEV_1
                 }
                 else
                 {
-                    Console.WriteLine("String is too short Length<2");
+                    throw new ArgumentException("input line is empty or too short(length < 2)");
                 }
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
                 Console.WriteLine(e);
                 throw;

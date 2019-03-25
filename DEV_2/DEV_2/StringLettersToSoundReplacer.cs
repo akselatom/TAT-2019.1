@@ -42,8 +42,8 @@ namespace DEV_2
             {
                 if (inputString.Contains(keys))
                 {
-                    string replaсeString = RussianDictionary.AllSoftSounds[keys];
-                    inputString = inputString.Replace(keys, replaсeString);
+                    string replaceString = RussianDictionary.AllSoftSounds[keys];
+                    inputString = inputString.Replace(keys, replaceString);
                 }
             }
 

@@ -31,7 +31,6 @@ namespace DEV_2
                 inputString = replacer.SofteningConsonants(inputString);
                 inputString = replacer.ProcessingVowelsIntoSounds(inputString);
                 Console.WriteLine(inputString);
-               
             }
             catch (IndexOutOfRangeException)
             {

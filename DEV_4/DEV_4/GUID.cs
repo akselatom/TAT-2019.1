@@ -9,17 +9,7 @@ namespace DEV_4
         /// <summary>
         /// Number of <see cref="GUID"/> objects. Required to generate default ID
         /// </summary>
-        private static int callsNumber = 0;
-
-        /// <summary>
-        /// The unique id.
-        /// </summary>
-        private string uniqueID;
-
-        /// <summary>
-        /// The description.
-        /// </summary>
-        private string description;
+        private static int callsNumber;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUID"/> class.
@@ -48,6 +38,27 @@ namespace DEV_4
         }
 
         /// <summary>
+        /// Gets the unique id.
+        /// </summary>
+        public string UniqueID { get; private set; }
+
+        /// <summary>
+        /// Gets the description.
+        /// </summary>
+        public string Description { get; private set; }
+
+        /// <summary>
+        /// Text description of the entity.
+        /// </summary>
+        /// <returns>
+        /// Return a text description of the entity.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.Description;
+        }
+
+        /// <summary>
         /// Unique index generator
         /// </summary>
         /// <param name="id">
@@ -56,19 +67,19 @@ namespace DEV_4
         private void GenerateUniqueID(string id = "object")
         {
             const int MaxStringSize = 257;
-            this.uniqueID = id.Length < MaxStringSize ? id + callsNumber : "object " + callsNumber;
+            this.UniqueID = id.Length < MaxStringSize ? id + callsNumber : "object " + callsNumber;
         }
 
         /// <summary>
         /// Description generator
         /// </summary>
         /// <param name="desc">
-        /// The escription
+        /// The description
         /// </param>
         private void GenerateDescription(string desc = "no description")
         {
             const int MaxStringSize = 257;
-            this.description = desc.Length < MaxStringSize ? desc : "no description";
+            this.Description = desc.Length < MaxStringSize ? desc : "no description";
         }
     }
 }

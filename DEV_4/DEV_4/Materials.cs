@@ -1,8 +1,10 @@
-﻿namespace DEV_4
+﻿
+namespace DEV_4
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     /// <summary>
     /// The materials.
@@ -12,7 +14,7 @@
         /// <summary>
         /// <see cref="GUID"/>
         /// </summary>
-        private GUID id;
+        private readonly GUID id;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Materials"/> class.
@@ -35,6 +37,42 @@
         {
             this.id = description == null ? new GUID(id) : new GUID(id, description);
         }
+
+        /// <summary>
+        /// Text description of the entity.
+        /// </summary>
+        /// <returns>
+        /// Return a text description of the entity.
+        /// </returns>
+        public override string ToString()
+        {
+            return base.ToString() + ": " + this.id;
+        }
+
+        /// <summary>
+        /// The equals.
+        /// </summary>
+        /// <param name="obj">
+        /// The obj.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {         
+            var m = obj as Materials; // returns null if object cannot be converted to Materials
+            if (m == null)
+            {
+                return false;
+            }
+
+            return m.id.UniqueID == this.id.UniqueID && m.id.Description == this.id.Description; 
+        }
+
+        public override int GetHashCode()
+        {
+            return this.id != null ? this.id.GetHashCode() : 0;
+        }
     }
 
     /// <summary>
@@ -43,25 +81,38 @@
     public class Lecture : Materials
     {
         /// <summary>
-        /// field containing lecture text.
-        /// </summary>
-        private string lectureText;
-
-        /// <summary>
-        /// <see cref="PresentationMaterial"/>
-        /// </summary>
-        private PresentationMaterial materials;
-
-        /// <inheritdoc />
-        /// <summary>
         /// Initializes a new instance of the <see cref="T:DEV_4.Lecture" /> class.
         /// </summary>
         public Lecture()
         {
-            this.lectureText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-            this.materials = new PresentationMaterial();
+            this.LectureText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+            this.Materials = new PresentationMaterial();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lecture"/> class.
+        /// </summary>
+        /// <param name="lectureText">
+        /// The lecture text.
+        /// </param>
+        /// <param name="material">
+        /// The lecture material. Default value is null.
+        /// </param>
+        public Lecture(string lectureText, PresentationMaterial material = null)
+        {
+            this.LectureText = lectureText;
+            this.Materials = material;
+        }
+
+        /// <summary>
+        /// Gets field containing lecture text.
+        /// </summary>
+        public string LectureText { get; private set; }
+
+        /// <summary>
+        /// Gets <see cref="PresentationMaterial"/>
+        /// </summary>
+        public PresentationMaterial Materials { get; private set; }
     }
 
     /// <summary>
@@ -69,8 +120,6 @@
     /// </summary>
     public class PresentationMaterial : Materials
     {
-        
-
         /// <summary>
         /// The file formats list.
         /// </summary>
@@ -111,34 +160,70 @@
             this.uri = filePath;
             this.fileFormat = FileFormatsList.Contains(fileFormat) ? fileFormat : FileFormatsList[0];
         }
+
+        /// <summary>
+        /// The presentation material file path.
+        /// </summary>
+        /// <returns>
+        /// Returns string with file path
+        /// </returns>
+        public string PresentationMaterialFilePath()
+        {
+            StringBuilder outputString = new StringBuilder();
+            outputString.AppendLine(this.uri);
+            outputString.AppendLine(this.fileFormat);
+            return outputString.ToString();
+        }
     }
 
+    /// <summary>
+    /// The seminar class.
+    /// </summary>
     public class Seminar : Materials
     {
-        /// <summary>
-        /// The task list.
-        /// </summary>
-        private List<string> taskList;
-
-        /// <summary>
-        /// The answers list.
-        /// </summary>
-        private List<string> answersList;
-
-        /// <summary>
-        /// The question list.
-        /// </summary>
-        private List<string> questionList;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Seminar"/> class.
         /// </summary>
         public Seminar()
         {
-            this.taskList = AddDefaultValues();
-            this.answersList = AddDefaultValues();
-            this.questionList = AddDefaultValues();
+            this.TaskList = AddDefaultValues();
+            this.AnswersList = AddDefaultValues();
+            this.QuestionList = AddDefaultValues();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Seminar"/> class.
+        /// </summary>
+        /// <param name="taskList">
+        /// The task list. 
+        /// </param>
+        /// <param name="answersList">
+        /// The answers list.
+        /// </param>
+        /// <param name="questionList">
+        /// The question list.
+        /// </param>
+        public Seminar(List<string> taskList, List<string> answersList, List<string> questionList)
+        {
+            this.TaskList = taskList;
+            this.AnswersList = answersList;
+            this.QuestionList = questionList;
+        }
+
+        /// <summary>
+        /// Gets the task list.
+        /// </summary>
+        public List<string> TaskList { get; private set; }
+
+        /// <summary>
+        /// Gets the answers list.
+        /// </summary>
+        public List<string> AnswersList { get; private set; }
+
+        /// <summary>
+        /// Gets the question list.
+        /// </summary>
+        public List<string> QuestionList { get; private set; }
 
         /// <summary>
         /// Add default values.
@@ -153,25 +238,43 @@
         }
     }
 
+    /// <summary>
+    /// The laboratory work class.
+    /// </summary>
     public class LaboratoryWork : Materials
     {
-        /// <summary>
-        /// The task list.
-        /// </summary>
-        private List<string> taskList;
-
-        /// <summary>
-        /// The instruction to laboratory work.
-        /// </summary>
-        private string instruction;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LaboratoryWork"/> class.
         /// </summary>
         public LaboratoryWork()
         {
-            this.taskList = new List<string> { "default Value" };
-            this.instruction = "Instruction";
+            this.TaskList = new List<string> { "default Value" };
+            this.Instruction = "Instruction";
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LaboratoryWork"/> class.
+        /// </summary>
+        /// <param name="taskList">
+        /// The task list.
+        /// </param>
+        /// <param name="instruction">
+        /// The instruction.
+        /// </param>
+        public LaboratoryWork(List<string> taskList, string instruction)
+        {
+            this.TaskList = taskList;
+            this.Instruction = instruction;
+        }
+
+        /// <summary>
+        /// Gets task list.
+        /// </summary>
+        public List<string> TaskList { get; private set; }
+
+        /// <summary>
+        /// Gets the instruction to laboratory work.
+        /// </summary>
+        public string Instruction { get; private set; }
     }
 }

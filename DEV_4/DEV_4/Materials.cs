@@ -115,16 +115,63 @@
 
     public class Seminar : Materials
     {
+        /// <summary>
+        /// The task list.
+        /// </summary>
         private List<string> taskList;
 
+        /// <summary>
+        /// The answers list.
+        /// </summary>
         private List<string> answersList;
-      
+
+        /// <summary>
+        /// The question list.
+        /// </summary>
+        private List<string> questionList;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Seminar"/> class.
+        /// </summary>
+        public Seminar()
+        {
+            this.taskList = AddDefaultValues();
+            this.answersList = AddDefaultValues();
+            this.questionList = AddDefaultValues();
+        }
+
+        /// <summary>
+        /// Add default values.
+        /// </summary>
+        /// <returns>
+        /// Returns <see cref="List{T}"/> with default values
+        /// </returns>
+        private static List<string> AddDefaultValues()
+        {
+            var list = new List<string> { "default value" };
+            return list;
+        }
     }
 
     public class LaboratoryWork : Materials
     {
+        /// <summary>
+        /// The task list.
+        /// </summary>
         private List<string> taskList;
 
+        /// <summary>
+        /// The instruction to laboratory work.
+        /// </summary>
         private string instruction;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LaboratoryWork"/> class.
+        /// </summary>
+        public LaboratoryWork()
+        {
+            this.taskList = new List<string> { "default Value" };
+            this.instruction = "Instruction";
+        }
     }
 }

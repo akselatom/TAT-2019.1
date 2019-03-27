@@ -4,25 +4,20 @@ namespace DEV_4
     /// <summary>
     /// Globally Unique Identifier
     /// </summary>
-    public class GUID
+    public class Guid
     {
         /// <summary>
-        /// Number of <see cref="GUID"/> objects. Required to generate default ID
+        /// Initializes a new instance of the <see cref="Guid"/> class.
         /// </summary>
-        private static int callsNumber;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GUID"/> class.
-        /// </summary>
-        public GUID()
+        public Guid()
         {
             this.GenerateUniqueID();
             this.GenerateDescription();
-            callsNumber++;
+            CallsNumber++;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GUID"/> class.
+        /// Initializes a new instance of the <see cref="Guid"/> class.
         /// </summary>
         /// <param name="id">
         /// Unique identifier 
@@ -30,12 +25,17 @@ namespace DEV_4
         /// <param name="description">
         /// The description.
         /// </param>
-        public GUID(string id, string description = "no description")
+        public Guid(string id, string description = "no description")
         {
             this.GenerateUniqueID(id);
             this.GenerateDescription(description);
-            callsNumber++;
+            CallsNumber++;
         }
+
+        /// <summary>
+        /// Gets number of <see cref="Guid"/> objects. Required to generate default ID
+        /// </summary>
+        public static int CallsNumber { get; private set; }
 
         /// <summary>
         /// Gets the unique id.
@@ -67,7 +67,7 @@ namespace DEV_4
         private void GenerateUniqueID(string id = "object")
         {
             const int MaxStringSize = 257;
-            this.UniqueID = id.Length < MaxStringSize ? id + callsNumber : "object " + callsNumber;
+            this.UniqueID = id.Length < MaxStringSize ? id + CallsNumber : "object " + CallsNumber;
         }
 
         /// <summary>

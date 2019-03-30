@@ -3,7 +3,6 @@ namespace DEV_5
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <inheritdoc />
     /// <summary>
@@ -66,17 +65,7 @@ namespace DEV_5
         /// </exception>
         public double GetFlyTime()
         {
-            if (this.RouteList.Count < 2)
-            {
-                throw new ArgumentException("it is impossible to calculate the flight time if there are less than two points");
-            }
-
-            double distance = 0;
-            for (var i = 0; i < this.RouteList.Count - 1; i++)
-            {
-                distance += this.RouteList[i].GetDistance(this.RouteList[i + 1]);
-            }
-
+            var distance = Point.GetDistanceInPointList(this.RouteList);
             double flyTime = 0;
             /*
             while (true)

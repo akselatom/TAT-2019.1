@@ -2,7 +2,6 @@
 namespace DEV_5
 {
     using System;
-    using System.Collections.Generic;
 
     /// <inheritdoc />
     /// <summary>
@@ -16,56 +15,51 @@ namespace DEV_5
         private int speed;
 
         /// <summary>
+        /// The distance traveled.
+        /// </summary>
+        private double distanceTraveled;
+
+        /// <summary>
+        /// The current bird dislocation.
+        /// </summary>
+        private Point currentPoint;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
         /// </summary>
         public Plane()
         {
-            this.RouteList = new List<Point> { new Point(new float[] { 0, 0, 0 }) };
+            this.currentPoint = new Point(new float[] { 0, 0, 0 });
             this.speed = 200;
+            this.distanceTraveled = 0;
         }
 
-        /// <summary>
-        /// Gets all <see cref="Point"/> in which there was a <see cref="Bird"/>
-        /// </summary>
-        public List<Point> RouteList { get; private set; }
+        /// <inheritdoc />
+        public event EventHandler<ObjectFlewArgs> ObjectFlew;
 
         /// <inheritdoc />
-        /// <summary>
-        /// Adds a new point to <see cref="RouteList"/>
-        /// </summary>
-        /// <param name="newPoint">
-        /// The new <see cref="T:DEV_5.Point" />.
-        /// </param>
         public void FlyTo(Point newPoint)
         {
-            this.RouteList.Add(newPoint);
+            this.distanceTraveled = this.currentPoint.GetDistance(newPoint);
+            var onObjectFlew = this.ObjectFlew;
+            if (onObjectFlew != null)
+            {
+                onObjectFlew.Invoke(this.WhoAmI(), new ObjectFlewArgs(this.GetFlyTime()));
+            }
+
+            this.currentPoint = newPoint;
         }
 
         /// <inheritdoc />
-        /// <summary>
-        /// Returns object type
-        /// </summary>
-        /// <returns>
-        /// The <see cref="T:System.Type" />.
-        /// </returns>
-        public Type WhoAmI()
+        public IFlyable WhoAmI()
         {
-            return this.GetType();
+            return this;
         }
 
         /// <inheritdoc />
-        /// <summary>
-        /// The get fly time.
-        /// </summary>
-        /// <returns>
-        /// elapsed time in hours
-        /// </returns>
-        /// <exception cref="T:System.ArgumentException">
-        /// it is impossible to calculate the flight time if there are less than two points
-        /// </exception>
         public double GetFlyTime()
         {
-            var distance = Point.GetDistanceInPointList(this.RouteList);
+            var distance = this.distanceTraveled;
             double flyTime = 0;
             while (true)
             {

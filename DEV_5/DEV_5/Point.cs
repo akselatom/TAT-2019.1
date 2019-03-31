@@ -2,7 +2,6 @@
 namespace DEV_5
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// The point.
@@ -40,34 +39,6 @@ namespace DEV_5
 
             this.coordinates = coordinates;
             this.dimension = dimension;
-        }
-
-        /// <summary>
-        /// The get distance in point list.
-        /// </summary>
-        /// <param name="points">
-        /// The points list.
-        /// </param>
-        /// <returns>
-        /// Returns distance between all points
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// it is impossible to calculate the flight time if there are less than two points
-        /// </exception>
-        public static double GetDistanceInPointList(List<Point> points)
-        {
-            if (points.Count < 2)
-            {
-                throw new ArgumentException("it is impossible to calculate the flight time if there are less than two points");
-            }
-
-            double distance = 0;
-            for (var i = 0; i < points.Count - 1; i++)
-            {
-                distance += points[i].GetDistance(points[i + 1]);
-            }
-
-            return distance;
         }
 
         /// <summary>

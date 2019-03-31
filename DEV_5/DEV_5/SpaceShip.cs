@@ -2,7 +2,6 @@
 namespace DEV_5
 {
     using System;
-    using System.Collections.Generic;
 
     /// <inheritdoc />
     /// <summary>
@@ -16,53 +15,50 @@ namespace DEV_5
         private const int Speed = 8000;
 
         /// <summary>
+        /// The distance traveled.
+        /// </summary>
+        private double distanceTraveled;
+
+        /// <summary>
+        /// The current bird dislocation.
+        /// </summary>
+        private Point currentPoint;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SpaceShip"/> class.
         /// </summary>
         public SpaceShip()
         {
-            this.RouteList = new List<Point> { new Point(new float[] { 0, 0, 0 }) };
+            this.currentPoint = new Point(new float[] { 0, 0, 0 });
+            this.distanceTraveled = 0;
         }
 
-        /// <summary>
-        /// Gets all <see cref="Point"/> in which there was a <see cref="Bird"/>
-        /// </summary>
-        public List<Point> RouteList { get; private set; }
+        /// <inheritdoc />
+        public event EventHandler<ObjectFlewArgs> ObjectFlew;
 
         /// <inheritdoc />
-        /// <summary>
-        /// Adds a new point to <see cref="P:DEV_5.SpaceShip.RouteList" />
-        /// </summary>
-        /// <param name="newPoint">
-        /// The new point.
-        /// </param>
         public void FlyTo(Point newPoint)
         {
-            this.RouteList.Add(newPoint);
+            this.distanceTraveled = this.currentPoint.GetDistance(newPoint);
+            var onObjectFlew = this.ObjectFlew;
+            if (onObjectFlew != null)
+            {
+                onObjectFlew.Invoke(this.WhoAmI(), new ObjectFlewArgs(this.GetFlyTime()));
+            }
+
+            this.currentPoint = newPoint;
         }
 
         /// <inheritdoc />
-        /// <summary>
-        /// Returns object type
-        /// </summary>
-        /// <returns>
-        /// The <see cref="T:System.Type" />.
-        /// </returns>
-        public Type WhoAmI()
+        public IFlyable WhoAmI()
         {
-            return this.GetType();
+            return this;
         }
 
         /// <inheritdoc />
-        /// <summary>
-        /// The get fly time.
-        /// </summary>
-        /// <returns>
-        /// elapsed time in hours
-        /// </returns>
         public double GetFlyTime()
         {
-            var distance = Point.GetDistanceInPointList(this.RouteList);
-            return distance / Speed;
+            return this.distanceTraveled / Speed;
         }
     }
 }

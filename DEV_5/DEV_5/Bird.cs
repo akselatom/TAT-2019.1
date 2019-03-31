@@ -1,7 +1,6 @@
 ﻿namespace DEV_5
 {
     using System;
-    using System.Collections.Generic;
 
     /// <inheritdoc />
     /// <summary>
@@ -15,83 +14,51 @@
         private int speed;
 
         /// <summary>
+        /// The distance traveled.
+        /// </summary>
+        private double distanceTraveled;
+
+        /// <summary>
+        /// The current bird dislocation.
+        /// </summary>
+        private Point currentPoint;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Bird"/> class. The initial position of the bird x:0 y:0 z:0
         /// </summary>
         public Bird()
         {
-            this.RouteList = new List<Point> { new Point(new float[] { 0, 0, 0 }) };
-            this.GenerateNewRandomSpeed();
+            this.currentPoint = new Point(new float[] { 0, 0, 0 });
+            this.distanceTraveled = 0;
+            this.speed = new Random().Next(0, 21);
         }
 
-        /// <summary>
-        /// Gets all <see cref="Point"/> in which there was a <see cref="Bird"/>
-        /// </summary>
-        public List<Point> RouteList { get; private set; }
+        /// <inheritdoc />
+        public event EventHandler<ObjectFlewArgs> ObjectFlew;
 
         /// <inheritdoc />
-        /// <summary>
-        /// Adds a new point to <see cref="RouteList"/>
-        /// </summary>
-        /// <param name="newPoint">
-        /// The new <see cref="T:DEV_5.Point" />.
-        /// </param>
         public void FlyTo(Point newPoint)
         {
-            this.RouteList.Add(newPoint);
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Returns object type
-        /// </summary>
-        /// <returns>
-        /// The <see cref="T:System.Type" />.
-        /// </returns>
-        public Type WhoAmI()
-        {
-            return this.GetType();
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// The get fly time.
-        /// </summary>
-        /// <returns>
-        /// elapsed time in hours
-        /// </returns>
-        /// <exception cref="T:System.ArgumentException">
-        /// it is impossible to calculate the flight time if there are less than two points
-        /// </exception>
-        public double GetFlyTime()
-        {
-            var distance = Point.GetDistanceInPointList(this.RouteList);
-            double flyTime = 0;
-            while (true)
-            {
-                // compares the distance traveled in an hour with all distance
-                if (this.speed < distance)
-                {   
-                    flyTime += 1;
-                    distance -= this.speed;
-                    this.GenerateNewRandomSpeed();
-                }
-                else
-                {
-                    flyTime += distance / this.speed;
-                    break;
-                }
+            this.distanceTraveled = this.currentPoint.GetDistance(newPoint);
+            var onObjectFlew = this.ObjectFlew;
+            if (onObjectFlew != null)
+            { 
+                onObjectFlew.Invoke(this.WhoAmI(), new ObjectFlewArgs(this.GetFlyTime()));
             }
 
-            return flyTime;
+            this.currentPoint = newPoint;
         }
 
-        /// <summary>
-        /// The generate new random speed.
-        /// </summary>
-        private void GenerateNewRandomSpeed()
+        /// <inheritdoc />
+        public IFlyable WhoAmI()
         {
-            var rand  = new Random();
-            this.speed = rand.Next(0, 21); // bird speed varies from 0 km/h to 20
+            return this;
+        }
+
+        /// <inheritdoc />
+        public double GetFlyTime()
+        {
+            return this.distanceTraveled / this.speed;
         }
     }
 }

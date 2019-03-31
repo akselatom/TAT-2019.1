@@ -9,6 +9,11 @@ namespace DEV_5
     public interface IFlyable
     {
         /// <summary>
+        /// The object flew.
+        /// </summary>
+        event EventHandler<ObjectFlewArgs> ObjectFlew;
+
+        /// <summary>
         /// The fly to new <see cref="Point"/>.
         /// </summary>
         /// <param name="newPoint">
@@ -17,18 +22,18 @@ namespace DEV_5
         void FlyTo(Point newPoint);
 
         /// <summary>
-        /// method returning object type
+        /// Reference of current object
         /// </summary>
         /// <returns>
-        /// The <see cref="Type"/>.
+        /// Returns reference of current object
         /// </returns>
-        Type WhoAmI();
+        IFlyable WhoAmI();
 
         /// <summary>
-        /// The get fly time.
+        /// Returns the time spent on <see cref="FlyTo"/>
         /// </summary>
         /// <returns>
-        /// The <see cref="float"/>.
+        /// Returns elapsed time.
         /// </returns>
         double GetFlyTime();
     }

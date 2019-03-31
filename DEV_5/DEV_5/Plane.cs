@@ -67,7 +67,6 @@ namespace DEV_5
         {
             var distance = Point.GetDistanceInPointList(this.RouteList);
             double flyTime = 0;
-            /*
             while (true)
             {
                 if (distance > 10)
@@ -82,11 +81,11 @@ namespace DEV_5
                     break;
                 }
             }
-            */
-            double acceleration = 205;
-            flyTime = Math.Pow((4 * this.speed * this.speed) + (8 * acceleration * distance), 0.5) + (-2 * this.speed);
-            flyTime = flyTime / 2 / acceleration;
 
+            // physically correct calculation
+            // double acceleration = 205;
+            // flyTime = Math.Pow((4 * this.speed * this.speed) + (8 * acceleration * distance), 0.5) + (-2 * this.speed);
+            // flyTime = flyTime / 2 / acceleration;
             return flyTime;
         }
     }

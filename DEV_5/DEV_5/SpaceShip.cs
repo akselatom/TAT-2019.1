@@ -4,6 +4,7 @@ namespace DEV_5
     using System;
     using System.Collections.Generic;
 
+    /// <inheritdoc />
     /// <summary>
     /// The space ship.
     /// </summary>

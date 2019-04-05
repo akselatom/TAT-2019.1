@@ -61,7 +61,6 @@ namespace DEV_3
                 {
                     Console.WriteLine("impossible to pick a team by criterion");
                 }
-
             }
             catch (Exception e)
             {

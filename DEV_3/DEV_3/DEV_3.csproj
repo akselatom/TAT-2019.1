@@ -44,9 +44,16 @@
     <Compile Include="Company.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Dev3.cs" />
+    <Compile Include="FirstCriteria.cs" />
+    <Compile Include="Junior.cs" />
+    <Compile Include="Middle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Customer.cs" />
+    <Compile Include="SecondCriteria.cs" />
     <Compile Include="SelectionCriteria.cs" />
+    <Compile Include="Senior.cs" />
+    <Compile Include="Lead.cs" />
+    <Compile Include="ThirdCriteria.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -42,7 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoDatabase.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="CommandCountAmountOfAuto.cs" />
+    <Compile Include="CommandCountBrands.cs" />
+    <Compile Include="CommandGetAveragePrice.cs" />
+    <Compile Include="CommandGetAvrPriceByBrand.cs" />
+    <Compile Include="CommandInvoker.cs" />
+    <Compile Include="EntryPoint.cs" />
+    <Compile Include="IConsoleCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

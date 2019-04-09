@@ -23,9 +23,9 @@ namespace DEV_6
                 this.XmlDoc = new XmlDocument();
                 this.XmlDoc.Load(fileName);
             }
-            catch (XmlException)
+            catch (System.IO.FileNotFoundException)
             {
-                Console.WriteLine("error while reading xml file");
+                Console.WriteLine("error while reading xml file. Try to place your xml file into program directory");
             }
         }
 
@@ -110,7 +110,7 @@ namespace DEV_6
                 {
                     foreach (XmlNode childNode in node.ChildNodes)
                     {
-                        if (childNode.Name != "brand" && childNode.InnerText != brandName)
+                        if (childNode.Name != "brand" || childNode.InnerText != brandName)
                         {
                             continue;
                         }
@@ -124,7 +124,7 @@ namespace DEV_6
                                 case "price":
                                     price += int.Parse(subChildNode.InnerText);
                                     break;
-                                case "number":
+                                case "count":
                                     numberOfCars = int.Parse(subChildNode.InnerText);
                                     break;
                             }

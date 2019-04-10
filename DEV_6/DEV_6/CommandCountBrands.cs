@@ -5,7 +5,7 @@
     /// <summary>
     /// command that count amount of brands in <see cref="AutoDatabase"/>
     /// </summary>
-    public class CommandCountBrands: IConsoleCommand
+    public class CommandCountBrands : IConsoleCommand
     {
         /// <summary>
         /// Count amount of auto in <see cref="AutoDatabase"/>

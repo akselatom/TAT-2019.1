@@ -22,6 +22,7 @@ namespace DEV_6
             {
                 this.XmlDoc = new XmlDocument();
                 this.XmlDoc.Load(fileName);
+                this.AutomobilesList = this.GetAutoListFromData();
             }
             catch (System.IO.FileNotFoundException)
             {
@@ -35,6 +36,11 @@ namespace DEV_6
         public XmlDocument XmlDoc { get; private set; }
 
         /// <summary>
+        /// Gets or sets the automobiles list.
+        /// </summary>
+        public List<Automobile> AutomobilesList { get; set; }
+
+        /// <summary>
         /// Gets amount of brands in <see cref="XmlDoc"/>.
         /// </summary>
         /// <returns>
@@ -43,11 +49,11 @@ namespace DEV_6
         public int GetAmountOfBrands()
         {
             var usedBrandsList = new List<string>();
-            foreach (var brandName in this.GetChildNodeInnerText("brand"))
+            foreach (var automobile in this.AutomobilesList)
             {
-                if (!usedBrandsList.Contains(brandName))
+                if (!usedBrandsList.Contains(automobile.BrandName))
                 {
-                    usedBrandsList.Add(brandName);
+                    usedBrandsList.Add(automobile.BrandName);
                 }
             }
 
@@ -63,9 +69,9 @@ namespace DEV_6
         public int GetAmountOfAutomobiles()
         {
             var amountOfAutomobiles = 0;
-            foreach (var count in this.GetChildNodeInnerText("count"))
+            foreach (var auto in this.AutomobilesList)
             {
-                amountOfAutomobiles += int.Parse(count);
+                amountOfAutomobiles += auto.Count;
             }
 
             return amountOfAutomobiles;
@@ -80,11 +86,9 @@ namespace DEV_6
         public double GetAveragePriceOfAllAutomobiles()
         {
             var averagePrice = 0;
-            for (int i = 0; i < this.GetChildNodeInnerText("price").Count; i++)
+            foreach (var automobile in this.AutomobilesList)
             {
-                ////total price = number of cars * car price.
-                averagePrice += int.Parse(this.GetChildNodeInnerText("price")[i])
-                                * int.Parse(this.GetChildNodeInnerText("count")[i]);
+                averagePrice += automobile.Price;
             }
 
             return averagePrice / (double)this.GetAmountOfAutomobiles();
@@ -101,83 +105,69 @@ namespace DEV_6
         /// </returns>
         public double GetAveragePriceOfAllAutomobiles(string brandName)
         {
-            var averagePrice = 0;
+            var price = 0;
             var amountOfCars = 0;
-            var xmlDocDocumentElement = this.XmlDoc.DocumentElement;
-            if (xmlDocDocumentElement != null)
+            foreach (var automobile in this.AutomobilesList)
             {
-                foreach (XmlNode node in xmlDocDocumentElement)
+                if (automobile.BrandName != brandName)
                 {
-                    foreach (XmlNode childNode in node.ChildNodes)
-                    {
-                        if (childNode.Name != "brand" || childNode.InnerText != brandName)
-                        {
-                            continue;
-                        }
-
-                        var price = 0;
-                        var numberOfCars = 0;
-                        foreach (XmlNode subChildNode in node.ChildNodes)
-                        {
-                            switch (subChildNode.Name)
-                            {
-                                case "price":
-                                    price += int.Parse(subChildNode.InnerText);
-                                    break;
-                                case "count":
-                                    numberOfCars = int.Parse(subChildNode.InnerText);
-                                    break;
-                            }
-                        }
-
-                        averagePrice += price * numberOfCars;
-                        amountOfCars += numberOfCars;
-                    }
+                    continue;
                 }
-            }
-            else
-            {
-                throw new ArgumentNullException(this.GetAmountOfAutomobiles().ToString(), "Trying to work with empty xml-file");
+
+                price += automobile.Price * automobile.Count;
+                amountOfCars += automobile.Count;
             }
 
-            return averagePrice / (double)amountOfCars;
+            return price / (double)amountOfCars;
         }
 
         /// <summary>
-        /// The get child node inner text.
+        /// The get auto list from <see cref="XmlDoc"/>.
         /// </summary>
-        /// <param name="childNodeName">
-        /// The child node name.
-        /// </param>
         /// <returns>
-        /// The <see cref="List{T}"/> of inner text of all child nodes.
+        /// List of <see cref="Automobile"/>
         /// </returns>
-        private List<string> GetChildNodeInnerText(string childNodeName)
+        private List<Automobile> GetAutoListFromData()
         {
-            var xmlDocDocumentElement = this.XmlDoc.DocumentElement;
-            var innerTexts = new List<string>();
-
-            if (xmlDocDocumentElement != null)
+            var autoList = new List<Automobile>();
+            if (this.XmlDoc.DocumentElement == null)
             {
-                foreach (XmlNode node in xmlDocDocumentElement)
-                {
-                    foreach (XmlNode childNode in node.ChildNodes)
-                    {
-                        if (childNode.Name != childNodeName)
-                        {
-                            continue;
-                        }
+                return null;
+            }
 
-                        innerTexts.Add(childNode.InnerText);     
+            foreach (XmlNode node in this.XmlDoc.DocumentElement)
+            {
+                var brand = string.Empty;
+                var model = string.Empty;
+                var count = 0;
+                var price = 0;
+                        
+                foreach (XmlNode childNode in node.ChildNodes)
+                {
+                    switch (childNode.Name)
+                    {
+                        case "brand":
+                            brand = childNode.InnerText;
+                            break;
+                        case "model":
+                            model = childNode.InnerText;
+                            break;
+                        case "count":
+                            count = int.Parse(childNode.InnerText);
+                            break;
+                        case "price":
+                            price = int.Parse(childNode.InnerText);
+                            break;
                     }
                 }
-            }
-            else
-            {
-                throw new ArgumentNullException(this.GetAmountOfAutomobiles().ToString(), "Trying to work with empty xml-file");
+
+                if (brand != string.Empty && model != string.Empty)
+                {
+                    autoList.Add(new Automobile(brand, model, count, price));
+                }
             }
 
-            return innerTexts;
+            return autoList;
         }
     }
 }

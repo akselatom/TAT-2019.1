@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoDatabase.cs" />
+    <Compile Include="Automobile.cs" />
     <Compile Include="CommandCountAmountOfAuto.cs" />
     <Compile Include="CommandCountBrands.cs" />
     <Compile Include="CommandGetAveragePrice.cs" />

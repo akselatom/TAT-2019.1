@@ -26,16 +26,10 @@ namespace DEV_3
                     throw new Exception("invalid input arguments");
                 }
 
-                if (!int.TryParse(args[0], out var availableMoney) || !int.TryParse(args[1], out var requiredProductivity)
-                                                                  || !int.TryParse(args[2], out var selectedCriteria))
-                {
-                    throw new Exception("invalid input arguments");
-                }
-
                 Company company = new Company();
-                Customer customer = new Customer(availableMoney, requiredProductivity);
+                Customer customer = new Customer(int.Parse(args[0]), int.Parse(args[1]));
                 SelectionCriteria criteria;
-                switch (selectedCriteria)
+                switch (int.Parse(args[2]))
                 {
                     case 1:
                         criteria = new FirstCriteria(company, customer);

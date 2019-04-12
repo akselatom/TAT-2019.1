@@ -12,7 +12,7 @@
         /// <summary>
         /// The number of employees.
         /// </summary>
-        public readonly int NumberOfEmployees;
+        public int NumberOfEmployees;
 
         /// <summary>
         /// Number of employees with qualifications <see cref="Lead"/>
@@ -78,7 +78,7 @@
         private T GetInstance<T>(string type)
         {
             object[] args = { "Company", " Employee" + this.NumberOfEmployees };
-            return (T)Activator.CreateInstance(Type.GetType(type) ?? throw new NoNullAllowedException(), args);
+            return (T)Activator.CreateInstance(Type.GetType(type), args);
         }
     }
 }

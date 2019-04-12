@@ -8,9 +8,6 @@
         /// <summary>
         /// The execute method
         /// </summary>
-        /// <param name="data">
-        /// Database <see cref="AutoDatabase"/>
-        /// </param>
-        void Execute(AutoDatabase data);
+        void Execute();
     }
 }

@@ -8,14 +8,6 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Automobile"/> class.
         /// </summary>
-        public Automobile()
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Automobile"/> class.
-        /// </summary>
         /// <param name="brandName">
         /// The brand name.
         /// </param>

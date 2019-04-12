@@ -1,7 +1,6 @@
 ﻿namespace DEV_6
 {
     using System;
-    using System.Linq;
 
     /// <summary>
     /// command that calculates the average cost of cars of a particular brand in <see cref="AutoDatabase"/>
@@ -9,19 +8,36 @@
     public class CommandGetAvrPriceByBrand : IConsoleCommand
     {
         /// <summary>
+        /// The data.
+        /// </summary>
+        private readonly AutoDatabase data;
+
+        /// <summary>
         /// Gets or sets the brand name.
         /// </summary>
-        public string BrandName { get; set; }
+        private readonly string brandName;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandGetAvrPriceByBrand"/> class.
+        /// </summary>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="brandName">
+        /// The brand name.
+        /// </param>
+        public CommandGetAvrPriceByBrand(AutoDatabase data, string brandName)
+        {
+            this.data = data;
+            this.brandName = brandName;
+        }
 
         /// <summary>
         /// calculates the average cost of cars of a particular brand in <see cref="AutoDatabase"/>
         /// </summary>
-        /// <param name="data">
-        /// A <see cref="AutoDatabase"/>
-        /// </param>
-        public void Execute(AutoDatabase data)
+        public void Execute()
         {
-            Console.WriteLine("Average Price of {0} cars: {1}", this.BrandName, data.GetAveragePriceOfAllAutomobiles(this.BrandName.Split(' ').Last()));
+            Console.WriteLine("Average Price of {0} cars: {1}", this.brandName, this.data.GetAveragePriceOfAllAutomobiles(this.brandName));
         }
     }
 }

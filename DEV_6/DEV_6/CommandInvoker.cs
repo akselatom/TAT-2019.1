@@ -1,6 +1,9 @@
 ﻿namespace DEV_6
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
 
     /// <summary>
     /// The command invoker.
@@ -10,31 +13,26 @@
         /// <summary>
         /// A <see cref="AutoDatabase"/>
         /// </summary>
-        private readonly AutoDatabase data;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandInvoker"/> class.
-        /// </summary>
-        /// <param name="xmlName">
-        /// The xml path.
-        /// </param>
-        public CommandInvoker(string xmlName)
-        {
-            this.data = new AutoDatabase(xmlName);
-        }
-
-        /// <summary>
-        /// Witch types of command can be processed by <see cref="CommandInvoker.ExecuteCommands"/>
-        /// </summary>
-        /// <param name="data">
-        /// The data.
-        /// </param>
-        public delegate void OnAddedCommand(AutoDatabase data);
+        private readonly List<AutoDatabase> data;
 
         /// <summary>
         /// Execute all <see cref="IConsoleCommand"/> commands
         /// </summary>
-        public event OnAddedCommand ExecuteCommands;
+        private Action executeCommands;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandInvoker"/> class.
+        /// </summary>
+        /// <param name="xmlNameAuto">
+        /// Name of xml file that contains information about auto
+        /// </param>
+        /// <param name="xmlNameTruck">
+        /// Name of xml file that contains information about trucks
+        /// </param>
+        public CommandInvoker(string xmlNameAuto, string xmlNameTruck)
+        {
+            this.data = new List<AutoDatabase> { new AutoDatabase(xmlNameAuto), new AutoDatabase(xmlNameTruck) };
+        }
 
         /// <summary>
         /// Gets or sets console commands.
@@ -47,19 +45,33 @@
         public void ProvideUserInterface()
         {
             Console.WriteLine("Input Command: ");
-            var consoleInput = Console.ReadLine();
-            while (consoleInput != null && consoleInput.ToLower() != "exit") 
+            //// by default using xml list with passenger cars
+            int indexOfXmlFileInList = 0;
+            var consoleInput = new StringBuilder(Console.ReadLine());
+            while (consoleInput != null && consoleInput.ToString() != "exit") 
             {
-                switch (consoleInput)
+                if (consoleInput.ToString().Contains("truck"))
                 {
-                    case "count types":
-                        this.ConsoleCommand = new CommandCountBrands();
+                    consoleInput.Replace("_truck", string.Empty);
+                    indexOfXmlFileInList = 1;
+                }
+
+                if (consoleInput.ToString().Contains("car"))
+                {
+                    consoleInput.Replace("_car", string.Empty);
+                    indexOfXmlFileInList = 0;
+                }
+
+                switch (consoleInput.ToString())
+                {
+                    case "count_types":
+                        this.ConsoleCommand = new CommandCountBrands(this.data[indexOfXmlFileInList]);
                         break;
-                    case "count all":
-                        this.ConsoleCommand = new CommandCountAmountOfAuto();
+                    case "count_all":
+                        this.ConsoleCommand = new CommandCountAmountOfAuto(this.data[indexOfXmlFileInList]);
                         break;
-                    case "average price":
-                        this.ConsoleCommand = new CommandGetAveragePrice();
+                    case "average_price":
+                        this.ConsoleCommand = new CommandGetAveragePrice(this.data[indexOfXmlFileInList]);
                         break;
                     case "execute":
                         consoleInput = null;
@@ -67,26 +79,29 @@
                         continue;
                     default:
                         {
-                            if (consoleInput.Contains("average price"))
+                            if (consoleInput.ToString().Contains("average_price"))
                             {
-                                var consoleCommand = new CommandGetAvrPriceByBrand { BrandName = consoleInput };
+                                var consoleCommand = new CommandGetAvrPriceByBrand(
+                                    this.data[indexOfXmlFileInList],
+                                    consoleInput.ToString().Split(' ').Last());
                                 this.ConsoleCommand = consoleCommand;
                             }
-                            else
-                            {
-                                Console.WriteLine("Invalid command input. Available commands : count types, count all, average price, average price type");
-                                consoleInput = Console.ReadLine();
-                            }
+
+                            Console.WriteLine("Invalid command input. Available commands : count_types_truck(car), count_all_truck(car), average_price_truck(car), average_price_truck(car)_type");
+                            consoleInput.Clear();
+                            consoleInput.Append(Console.ReadLine());
                             continue;
                         }
                 }
 
-                this.ExecuteCommands += this.ConsoleCommand.Execute;  
-                consoleInput = Console.ReadLine();
+                this.executeCommands += this.ConsoleCommand.Execute;  
+                consoleInput.Clear();
+                consoleInput.Append(Console.ReadLine());
             }
-            if (this.ExecuteCommands != null)
+
+            if (this.executeCommands != null)
             {
-                this.ExecuteCommands(this.data);
+                this.executeCommands();
             }
         }
     }

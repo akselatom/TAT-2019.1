@@ -8,14 +8,27 @@
     public class CommandCountBrands : IConsoleCommand
     {
         /// <summary>
-        /// Count amount of auto in <see cref="AutoDatabase"/>
+        /// The data.
+        /// </summary>
+        private readonly AutoDatabase data;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandCountBrands"/> class.
         /// </summary>
         /// <param name="data">
-        /// A <see cref="AutoDatabase"/>
+        /// The data.
         /// </param>
-        public void Execute(AutoDatabase data)
+        public CommandCountBrands(AutoDatabase data)
         {
-            Console.WriteLine("Amount of brands: {0}", data.GetAmountOfBrands());
+            this.data = data;
+        }
+
+        /// <summary>
+        /// Count amount of auto in <see cref="AutoDatabase"/>
+        /// </summary>
+        public void Execute()
+        {
+            Console.WriteLine("Amount of brands: {0}", this.data.GetAmountOfBrands());
         }
     }
 }

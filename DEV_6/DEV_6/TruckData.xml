@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<automobile>
+  <auto>
+    <brand>DAF</brand>
+    <model>XF</model>
+    <count>2</count>
+    <price>80000</price>
+  </auto>
+  <auto>
+    <brand>MAZ</brand>
+    <model>447137</model>
+    <count>1</count>
+    <price>12900</price>
+  </auto>
+  <auto>
+    <brand>Ford</brand>
+    <model>Transit</model>
+    <count>2</count>
+    <price>35000</price>
+  </auto>
+  <auto>
+    <brand>Iveco</brand>
+    <model>Stralis</model>
+    <count>1</count>
+    <price>26500</price>
+  </auto>
+  <auto>
+    <brand>Mitsubishi</brand>
+    <model>Canter</model>
+    <count>1</count>
+    <price>15100</price>
+  </auto>
+  <auto>
+    <brand>Iveco</brand>
+    <model>3512</model>
+    <count>1</count>
+    <price>17800</price>
+  </auto>
+</automobile>

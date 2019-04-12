@@ -20,18 +20,26 @@
         /// </param>
         public CommandInvoker(string xmlName)
         {
-            this.ConsoleCommand = new IConsoleCommand[]
-                                      {
-                                          new CommandCountBrands(), new CommandCountAmountOfAuto(),
-                                          new CommandGetAveragePrice(), new CommandGetAvrPriceByBrand(),
-                                      };
             this.data = new AutoDatabase(xmlName);
         }
 
         /// <summary>
+        /// Witch types of command can be processed by <see cref="CommandInvoker.ExecuteCommands"/>
+        /// </summary>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        public delegate void OnAddedCommand(AutoDatabase data);
+
+        /// <summary>
+        /// Execute all <see cref="IConsoleCommand"/> commands
+        /// </summary>
+        public event OnAddedCommand ExecuteCommands;
+
+        /// <summary>
         /// Gets or sets console commands.
         /// </summary>
-        public IConsoleCommand[] ConsoleCommand { get; set; }
+        public IConsoleCommand ConsoleCommand { get; set; }
 
         /// <summary>
         /// Provides user interface.
@@ -42,30 +50,43 @@
             var consoleInput = Console.ReadLine();
             while (consoleInput != null && consoleInput.ToLower() != "exit") 
             {
-                if (consoleInput == "count types")
+                switch (consoleInput)
                 {
-                    this.ConsoleCommand[0].Execute(this.data);
-                }
-                else if (consoleInput == "count all")
-                {
-                    this.ConsoleCommand[1].Execute(this.data);
-                }
-                else if (consoleInput == "average price")
-                {
-                    this.ConsoleCommand[2].Execute(this.data);
-                }
-                else if (consoleInput.Contains("average price"))
-                {
-                    var consoleCommand = new CommandGetAvrPriceByBrand { BrandName = consoleInput };
-                    this.ConsoleCommand[3] = consoleCommand;
-                    this.ConsoleCommand[3].Execute(this.data);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid command input. Available commands : count types, count all, average price, average price type");
+                    case "count types":
+                        this.ConsoleCommand = new CommandCountBrands();
+                        break;
+                    case "count all":
+                        this.ConsoleCommand = new CommandCountAmountOfAuto();
+                        break;
+                    case "average price":
+                        this.ConsoleCommand = new CommandGetAveragePrice();
+                        break;
+                    case "execute":
+                        consoleInput = null;
+                        this.ConsoleCommand = null;
+                        continue;
+                    default:
+                        {
+                            if (consoleInput.Contains("average price"))
+                            {
+                                var consoleCommand = new CommandGetAvrPriceByBrand { BrandName = consoleInput };
+                                this.ConsoleCommand = consoleCommand;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid command input. Available commands : count types, count all, average price, average price type");
+                                consoleInput = Console.ReadLine();
+                            }
+                            continue;
+                        }
                 }
 
+                this.ExecuteCommands += this.ConsoleCommand.Execute;  
                 consoleInput = Console.ReadLine();
+            }
+            if (this.ExecuteCommands != null)
+            {
+                this.ExecuteCommands(this.data);
             }
         }
     }

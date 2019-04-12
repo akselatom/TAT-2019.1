@@ -23,6 +23,5 @@
         {
             Console.WriteLine("Average Price of {0} cars: {1}", this.BrandName, data.GetAveragePriceOfAllAutomobiles(this.BrandName.Split(' ').Last()));
         }
-
     }
 }

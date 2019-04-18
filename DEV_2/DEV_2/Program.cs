@@ -19,22 +19,20 @@ namespace DEV_2
         {
             try
             {
-                if (args.Length < 0 || args[0].Length < 2)
+                if (args == null)
                 {
-                    throw new IndexOutOfRangeException();
+                    throw new NullReferenceException("Null input arguments");
                 }
 
-                var inputString = args[0];
-                var replacer = new StringLettersToSoundReplacer();
-                inputString = replacer.VoicingOrStunningConsonantsReplacer(inputString);
-                inputString = replacer.ReplacementUnstressedO(inputString);
-                inputString = replacer.SofteningConsonants(inputString);
-                inputString = replacer.ProcessingVowelsIntoSounds(inputString);
-                Console.WriteLine(inputString);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("Empty or too short String!");
+                if (args.Length > 1)
+                {
+                    throw new ArgumentException("More than one word in args!");
+                }
+                var replacer = new StringLettersToSoundReplacer(args[0]);
+                replacer.VoicingOrStunningConsonantsReplacer();
+                replacer.ReplacementUnstressedO();
+                replacer.SofteningConsonants();
+                Console.WriteLine(replacer.ProcessingVowelsIntoSounds());
             }
             catch (Exception e)
             {

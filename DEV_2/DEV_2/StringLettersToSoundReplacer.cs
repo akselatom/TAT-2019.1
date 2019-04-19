@@ -25,9 +25,8 @@ namespace DEV_2
         {
             if (this.CheckCorrectInputString(inputString))
             {
-                this.inputString = inputString;
+                this.inputString = inputString.ToLower();
             }
-            
         }
 
         /// <summary>
@@ -91,7 +90,7 @@ namespace DEV_2
                 }
             }
 
-            return tempString;
+            return tempString.ToLower();
         }
 
         /// <summary>
@@ -113,9 +112,21 @@ namespace DEV_2
             return this.inputString;
         }
 
+        /// <summary>
+        /// The check correct input string.
+        /// </summary>
+        /// <param name="inputWord">
+        /// The input word.
+        /// </param>
+        /// <returns>
+        /// Returns true if input string is correct
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Throws Exception if input string is too short or have unacceptable symbols
+        /// </exception>
         public bool CheckCorrectInputString(string inputWord)
         {
-            if (inputWord.Length <= 2)
+            if (inputWord.Length < 2)
             {
                 throw new ArgumentException("Too short input word.");
             }
@@ -211,7 +222,7 @@ namespace DEV_2
 
         /// <summary>
         /// Changes first letter to upper case. Necessary for the correct operation of the <see cref="ProcessingVowelsIntoSounds"/>
-        /// in case the vowel comes first
+        /// in case when vowel comes first
         /// </summary>
         /// <returns>
         /// returns a string with a capital letter

@@ -19,7 +19,7 @@ namespace DEV_2
         {
             try
             {
-                if (args == null)
+                if (args == null || args.Length == 0)
                 {
                     throw new NullReferenceException("Null input arguments");
                 }
@@ -28,9 +28,11 @@ namespace DEV_2
                 {
                     throw new ArgumentException("More than one word in args!");
                 }
+
                 var replacer = new StringLettersToSoundReplacer(args[0]);
                 replacer.VoicingOrStunningConsonantsReplacer();
                 replacer.ReplacementUnstressedO();
+                
                 replacer.SofteningConsonants();
                 Console.WriteLine(replacer.ProcessingVowelsIntoSounds());
             }

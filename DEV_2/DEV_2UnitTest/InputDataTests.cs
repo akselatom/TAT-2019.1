@@ -30,7 +30,7 @@ namespace DEV_2UnitTest
         [ExpectedException(typeof(ArgumentException))]
         public void WordLengthLessThan2Test()
         {
-            Program.Main(new[] { "аа" });
+            Program.Main(new[] { "а" });
         }
 
         /// <summary>
@@ -65,7 +65,6 @@ namespace DEV_2UnitTest
         [DataTestMethod]
         public void EnteringIncorrectWords(string[] value)
         {
-            
             try
             {
                 Program.Main(value);

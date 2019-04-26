@@ -3,9 +3,18 @@ namespace CW_4
 {
     using System;
 
-    class Program
+    /// <summary>
+    /// Data structure development
+    /// </summary>
+    public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The main.
+        /// </summary>
+        /// <param name="args">
+        /// The args.
+        /// </param>
+        public static void Main(string[] args)
         {
             var newList = new MyList<int>(new Node<int>(0));
             var anotherList = new MyList<int>(new Node<int>(10));

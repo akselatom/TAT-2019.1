@@ -2,16 +2,31 @@
 {
     using System;
 
+    /// <summary>
+    /// My list class
+    /// </summary>
+    /// <typeparam name="T">
+    /// type of data
+    /// </typeparam>
     public class MyList<T>
     {
-
-        public Node<T> Head { get; set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MyList{T}"/> class.
+        /// </summary>
+        /// <param name="headNode">
+        /// The head node.
+        /// </param>
         public MyList(Node<T> headNode)
         {
             this.Head = headNode;
         }
 
+        /// <summary>
+        /// The on added handler.
+        /// </summary>
+        /// <param name="message">
+        /// The message.
+        /// </param>
         public delegate void OnAddedHandler(string message);
 
         /// <summary>
@@ -19,10 +34,28 @@
         /// </summary>
         public event OnAddedHandler ElementAdded;
 
+        /// <summary>
+        /// The added in another list event
+        /// </summary>
         public event EventHandler<T> AddedInAnotherList;
+        
+        /// <summary>
+        /// Gets or sets first value of the list
+        /// </summary>
+        public Node<T> Head { get; set; }
+
+        /// <summary>
+        /// Add value in <see cref="MyList{T}"/>
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Throw exception when input data does not match with head value type
+        /// </exception>
         public void Add(T value)
         {
-            if (this.Head.value.GetType() == value.GetType())
+            if (this.Head.Value.GetType() == value.GetType())
             {
                 var currentNode = this.Head;
                 while (currentNode.NextNode != null)
@@ -45,12 +78,22 @@
             }
         }
 
+        /// <summary>
+        /// Search method that checks whether this value is in the list
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// returns true if list contains this value
+        /// </returns>
         public bool Search(T value)
         {
             var currentNode = this.Head;
             do
             {
-                if (currentNode.value.ToString() == value.ToString())
+                if (currentNode.Value.ToString() == value.ToString())
                 {
                     return true;
                 }
@@ -61,6 +104,15 @@
             return false;
         }
 
+        /// <summary>
+        /// when adding a value, checks the presence of this value in all sheets subscribed to the event <see cref="AddedInAnotherList"/>
+        /// </summary>
+        /// <param name="obj">
+        /// The obj.
+        /// </param>
+        /// <param name="args">
+        /// The args.
+        /// </param>
         public void CheckIsExist(object obj, T args)
         {
             if (this.Search(args))
@@ -68,6 +120,5 @@
                 Console.WriteLine("This value is exists at another list");
             }
         }
-
     }
 }

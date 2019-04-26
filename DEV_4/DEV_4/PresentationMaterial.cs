@@ -12,11 +12,6 @@ namespace DEV_4
     public class PresentationMaterial : Materials
     {
         /// <summary>
-        /// The file formats list.
-        /// </summary>
-        private static readonly string[] FileFormatsList = { "unknown", "ppt", "pdf", "txt" };
-
-        /// <summary>
         /// The uri.
         /// </summary>
         private string uri;
@@ -33,7 +28,18 @@ namespace DEV_4
         public PresentationMaterial()
         {
             this.uri = AppDomain.CurrentDomain.BaseDirectory + "\\PresentationMaterial\\lectureText";
-            this.fileFormat = FileFormatsList[3];
+            this.fileFormat = FileFormatsList.Txt.ToString();
+        }
+
+        /// <summary>
+        /// The file formats list.
+        /// </summary>
+        private enum FileFormatsList
+        {
+            Unknown,
+            Ppt,
+            Pdf,
+            Txt,
         }
 
         /// <inheritdoc />
@@ -49,7 +55,7 @@ namespace DEV_4
         public PresentationMaterial(string filePath, string fileFormat = "txt")
         {
             this.uri = filePath;
-            this.fileFormat = FileFormatsList.Contains(fileFormat) ? fileFormat : FileFormatsList[0];
+            this.fileFormat = Enum.GetNames(typeof(FileFormatsList)).Contains(fileFormat) ? fileFormat : FileFormatsList.Unknown.ToString();
         }
 
         /// <summary>

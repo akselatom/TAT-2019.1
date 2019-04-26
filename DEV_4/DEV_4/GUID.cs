@@ -7,6 +7,11 @@ namespace DEV_4
     public class Guid
     {
         /// <summary>
+        /// Max Unique Identifier length
+        /// </summary>
+        private const int MaxStringSize = 257;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Guid"/> class.
         /// </summary>
         public Guid()
@@ -66,7 +71,6 @@ namespace DEV_4
         /// </param>
         private void GenerateUniqueID(string id = "object")
         {
-            const int MaxStringSize = 257;
             this.UniqueID = id.Length < MaxStringSize ? id + CallsNumber : "object " + CallsNumber;
         }
 
@@ -78,7 +82,6 @@ namespace DEV_4
         /// </param>
         private void GenerateDescription(string desc = "no description")
         {
-            const int MaxStringSize = 257;
             this.Description = desc.Length < MaxStringSize ? desc : "no description";
         }
     }

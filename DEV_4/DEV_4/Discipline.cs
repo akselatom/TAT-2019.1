@@ -29,28 +29,6 @@ namespace DEV_4
         public List<Tuple<Lecture, Seminar, LaboratoryWork>> DisciplineList { get; private set; }
 
         /// <summary>
-        /// method that finds by index lecture in <see cref="DisciplineList"/> and related seminars and laboratory works
-        /// </summary>
-        /// <param name="index">
-        /// The index.
-        /// </param>
-        /// <returns>
-        /// The <see cref="Tuple"/>.
-        /// </returns>
-        public Tuple<Lecture, Seminar, LaboratoryWork> this[int index]
-        {
-            get
-            {
-                return this.DisciplineList[index];
-            }
-
-            set
-            {
-                this.DisciplineList.Add(value);
-            }
-        }
-
-        /// <summary>
         /// Add materials to list.
         /// </summary>
         /// <param name="lessonTuple">
@@ -73,13 +51,13 @@ namespace DEV_4
         /// </returns>
         public override bool Equals(object obj)
         {
-            var m = obj as Discipline; // returns null if object cannot be converted to Discipline
-            if (m == null)
+            var comparedObject = obj as Discipline; // returns null if object cannot be converted to Discipline
+            if (comparedObject == null)
             {
                 return false;
             }
 
-            return m.id.UniqueID == this.id.UniqueID && m.id.Description == this.id.Description; 
+            return comparedObject.id.UniqueID == this.id.UniqueID && comparedObject.id.Description == this.id.Description; 
         }
 
         /// <inheritdoc />

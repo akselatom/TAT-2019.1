@@ -16,6 +16,9 @@
         /// </summary>
         private By passwordInputLocator = By.XPath("//input[@type = 'password']");
 
+        /// <summary>
+        /// The submit button locator.
+        /// </summary>
         private By submitButtonLocator = By.XPath("//div[contains(@id, 'Next')]");
 
         /// <summary>
@@ -30,25 +33,45 @@
         /// The driver.
         /// </param>
         /// <exception cref="ArgumentException">
+        /// if current page is not a sing in page throw <see cref="ArgumentException"/>
         /// </exception>
         public SingInPage(IWebDriver driver)
         {
             this.driver = driver;
-            if (!driver.Title.Contains("Sing") || !driver.Title.Contains("Вход"))
+            if (!driver.Url.Contains("/signin"))
             {
                 throw new ArgumentException("This is not the sing in page");
             }
         }
 
-        public SingInPage typeLogin(string login)
+        /// <summary>
+        /// Type login at login input field.
+        /// </summary>
+        /// <param name="login">
+        /// The login.
+        /// </param>
+        /// <returns>
+        /// Updated <see cref="SingInPage"/>.
+        /// </returns>
+        public SingInPage TypeLogin(string login)
         {
             this.driver.FindElement(this.loginInputLocator).SendKeys(login);
             this.driver.FindElement(this.submitButtonLocator).Click();
             return this;
         }
 
-        public HomePage typePassword(string password)
+        /// <summary>
+        /// The type password. at password input field
+        /// </summary>
+        /// <param name="password">
+        /// The password.
+        /// </param>
+        /// <returns>
+        /// Returns the new instance of the <see cref="HomePage"/> class.
+        /// </returns>
+        public HomePage TypePassword(string password)
         {
+            System.Threading.Thread.Sleep(3000);
             this.driver.FindElement(this.passwordInputLocator).SendKeys(password);
             this.driver.FindElement(this.submitButtonLocator).Click();
             return new HomePage(this.driver);

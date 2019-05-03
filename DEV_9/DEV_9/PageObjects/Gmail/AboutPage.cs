@@ -3,9 +3,6 @@
     using System;
 
     using OpenQA.Selenium;
-    using OpenQA.Selenium.Chrome;
-    using OpenQA.Selenium.Support.Events;
-    using OpenQA.Selenium.Support.UI;
 
     /// <summary>
     /// The about page.

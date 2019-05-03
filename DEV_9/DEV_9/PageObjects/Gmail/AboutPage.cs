@@ -3,6 +3,7 @@
     using System;
 
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Chrome;
     using OpenQA.Selenium.Support.Events;
     using OpenQA.Selenium.Support.UI;
 
@@ -14,7 +15,7 @@
         /// <summary>
         /// The login button locator.
         /// </summary>
-        private By singInButtonLocator = By.XPath("//li[contains(., 'Войти')] | //a[contains(., 'Sign')]");
+        private By singInButtonLocator = By.XPath("//a[contains(., 'Войти')] | //a[contains(., 'Sign')]");
 
         /// <summary>
         /// The driver.
@@ -38,9 +39,8 @@
         /// </returns>
         public SingInPage SingIn()
         {
-            WebDriverWait wait = new WebDriverWait(this.driver,TimeSpan.FromSeconds(3.0));
-            wait.Until(Expe.ElementToBeClickable(this.driver.FindElement(this.singInButtonLocator).Click()));
-            this.driver.FindElement(this.singInButtonLocator).Click();
+            
+            this.driver.Navigate().GoToUrl(this.driver.FindElement(this.singInButtonLocator).GetAttribute("href"));
             return new SingInPage(this.driver);
         }
     }

@@ -3,6 +3,7 @@
     using System;
 
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.UI;
 
     public class SingInPage
     {
@@ -71,7 +72,8 @@
         /// </returns>
         public HomePage TypePassword(string password)
         {
-            System.Threading.Thread.Sleep(3000);
+            WebDriverWait wait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(3.0));
+            wait.Until(ExpectedConditions.ElementIsClickable(this.passwordInputLocator));
             this.driver.FindElement(this.passwordInputLocator).SendKeys(password);
             this.driver.FindElement(this.submitButtonLocator).Click();
             return new HomePage(this.driver);

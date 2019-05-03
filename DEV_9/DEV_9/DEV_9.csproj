@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpectedConditions.cs" />
     <Compile Include="PageObjects\Gmail\AboutPage.cs" />
     <Compile Include="PageObjects\Gmail\HomePage.cs" />
     <Compile Include="PageObjects\Gmail\SingInPage.cs" />

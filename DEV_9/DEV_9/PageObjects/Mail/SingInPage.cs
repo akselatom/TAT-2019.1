@@ -2,8 +2,6 @@
 {
     using System;
 
-    using DEV_9.PageObjects.Gmail;
-
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.UI;
 

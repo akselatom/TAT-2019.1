@@ -50,6 +50,7 @@
     <Compile Include="PageObjects\Gmail\AboutPage.cs" />
     <Compile Include="PageObjects\Gmail\HomePage.cs" />
     <Compile Include="PageObjects\Gmail\SingInPage.cs" />
+    <Compile Include="PageObjects\Mail\HomePage.cs" />
     <Compile Include="PageObjects\Mail\SingInPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

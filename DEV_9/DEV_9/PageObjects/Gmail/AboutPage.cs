@@ -3,6 +3,7 @@
     using System;
 
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Chrome;
 
     /// <summary>
     /// The about page.
@@ -15,13 +16,25 @@
         private By singInButtonLocator = By.XPath("//a[contains(., 'Войти')] | //a[contains(., 'Sign')]");
 
         /// <summary>
-        /// The driver.
+        /// Gets a driver.
         /// </summary>
-        private IWebDriver driver;
+        public IWebDriver Driver { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AboutPage"/> class.
+        /// </summary>
+        /// <param name="chromeWebDriverPath">
+        /// The chrome web driver path.
+        /// </param>
+        public AboutPage(string chromeWebDriverPath)
+        {
+            this.Driver = new ChromeDriver(chromeWebDriverPath);
+            this.Driver.Navigate().GoToUrl("https://www.google.com/gmail/about/");
+        }
 
         public AboutPage(IWebDriver driver)
         {
-            this.driver = driver;
+            this.Driver = driver;
             if (!driver.Url.Contains("gmail/about/")) 
             {
                 throw new ArgumentException("This is not the about page");
@@ -37,8 +50,8 @@
         public SingInPage SingIn()
         {
             
-            this.driver.Navigate().GoToUrl(this.driver.FindElement(this.singInButtonLocator).GetAttribute("href"));
-            return new SingInPage(this.driver);
+            this.Driver.Navigate().GoToUrl(this.Driver.FindElement(this.singInButtonLocator).GetAttribute("href"));
+            return new SingInPage(this.Driver);
         }
     }
 }

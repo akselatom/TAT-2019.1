@@ -70,11 +70,16 @@
         /// <returns>
         /// Returns the new instance of the <see cref="HomePage"/> class.
         /// </returns>
-        public HomePage TypePassword(string password)
+        public SingInPage TypePassword(string password)
         {
             WebDriverWait wait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(3.0));
             wait.Until(ExpectedConditions.ElementIsClickable(this.passwordInputLocator));
             this.driver.FindElement(this.passwordInputLocator).SendKeys(password);
+            return this;
+        }
+
+        public HomePage ClickSubmitButton()
+        {
             this.driver.FindElement(this.submitButtonLocator).Click();
             return new HomePage(this.driver);
         }

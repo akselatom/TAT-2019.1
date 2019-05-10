@@ -9,19 +9,18 @@
     /// </summary>
     public class HomePage
     {
+
         /// <summary>
         /// The driver.
         /// </summary>
         private IWebDriver driver;
 
+        public By WriteANewLetterButton { get; private set; }
+
         public HomePage(IWebDriver driver)
         {
+            this.WriteANewLetterButton = By.XPath("//div[@role ='button' and contains(., 'Написать')] ");
             this.driver = driver;
-            this.driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(2);
-            if (!driver.Url.Contains("/mail/#inbox"))
-            {
-                throw new ArgumentException("This is not the sing in page");
-            }
         }
     }
 }

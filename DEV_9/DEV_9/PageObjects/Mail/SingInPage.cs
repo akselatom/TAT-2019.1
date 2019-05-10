@@ -49,6 +49,15 @@
             }
         }
 
+        /// <summary>
+        /// The type login in input field.
+        /// </summary>
+        /// <param name="login">
+        /// The login.
+        /// </param>
+        /// <returns>
+        /// The <see cref="SingInPage"/>.
+        /// </returns>
         public SingInPage TypeLogin(string login)
         {
             this.driver.FindElement(this.loginInputLocator).SendKeys(login);
@@ -65,11 +74,22 @@
         /// <returns>
         /// Returns the new instance of the <see cref="HomePage"/> class.
         /// </returns>
-        public HomePage TypePassword(string password)
+        public SingInPage TypePassword(string password)
         {
             WebDriverWait wait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(3.0));
             wait.Until(ExpectedConditions.ElementIsClickable(this.passwordInputLocator));
             this.driver.FindElement(this.passwordInputLocator).SendKeys(password);
+            return this;
+        }
+
+        /// <summary>
+        /// Click submit button.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="HomePage"/>.
+        /// </returns>
+        public HomePage ClickSubmitButton()
+        {
             this.driver.FindElement(this.submitButtonLocator).Click();
             return new HomePage(this.driver);
         }

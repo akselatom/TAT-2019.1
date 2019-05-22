@@ -6,6 +6,9 @@
     using System.Linq;
     using System.Net;
 
+    /// <summary>
+    /// The ftp worker.
+    /// </summary>
     public class FtpWorker
     {
         /// <summary>
@@ -33,6 +36,13 @@
             this.ftpFolder = ftpFolder;
         }
 
+        /// <summary>
+        /// The get file names list in folder
+        /// </summary>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// List of files name in folder
+        /// </returns>
         public List<string> GetFileNamesList()
         {
             try  
@@ -63,24 +73,19 @@
         /// The file name.
         /// </param>
         /// <exception cref="Exception">
-        /// throw exception when has trouble with ftp connect
+        /// throw exception when have trouble with ftp connect
         /// </exception>
         public void DownloadFileFromFtpFolder(string fileName)
         {
             try
             {
                 Console.WriteLine("Download" + fileName);
-                //Create FTP Request.
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftp + ftpFolder + fileName);
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
- 
-                //Enter FTP Server credentials.
-                //request.Credentials = new NetworkCredential("Username", "Password");
                 request.UsePassive = true;
                 request.UseBinary = true;
                 request.EnableSsl = false;
                 
-                //Fetch the Response and read it into a MemoryStream object.
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 using (Stream responseStream = response.GetResponseStream())
                 {

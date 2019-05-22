@@ -2,12 +2,17 @@
 {
     using System;
 
+    using DEV_9;
     using DEV_9.PageObjects.Gmail;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.UI;
 
+    /// <summary>
+    /// The gmail log in tests.
+    /// </summary>
     [TestClass]
     public class GmailLogInTests
     {
@@ -29,13 +34,21 @@
         [DataTestMethod]
         public void LogInWithCorrectDataTest(string login, string password)
         {
-            AboutPage aboutPage = new AboutPage(@"C:\SeleniumDriver");
-            this.driver = aboutPage.Driver;
-            this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-            SingInPage singInPage = aboutPage.SingIn();
+            GmailAboutPage aboutPage;
+            try
+            {
+                aboutPage = new GmailAboutPage(AppDomain.CurrentDomain.BaseDirectory);
+            }
+            catch (WebDriverException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            var singInPage = aboutPage.GoToSingInPage();
             singInPage.TypeLogin(login);
             singInPage.TypePassword(password);
-            Assert.IsTrue(this.driver.FindElement(singInPage.ClickSubmitButton().WriteANewLetterButton).Displayed);
+            Assert.IsTrue(singInPage.GoToHomePage().WriteANewLetterButton.Enabled);
         }
 
         /// <summary>
@@ -49,16 +62,28 @@
         /// </param>
         [DataRow("kalykhan.tat2019@gmail.com", "NotRightPassword")]
         [DataTestMethod]
-        [ExpectedException(typeof(NoSuchElementException))]
         public void LogInWithWrongDataTest(string login, string password)
         {
-            AboutPage aboutPage = new AboutPage(@"C:\SeleniumDriver");
-            this.driver = aboutPage.Driver;
-            this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-            SingInPage singInPage = aboutPage.SingIn();
+            GmailAboutPage aboutPage;
+            try
+            {
+                aboutPage = new GmailAboutPage(AppDomain.CurrentDomain.BaseDirectory);
+            }
+            catch (WebDriverException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            var singInPage = aboutPage.GoToSingInPage();
             singInPage.TypeLogin(login);
             singInPage.TypePassword(password);
-            Assert.IsFalse(this.driver.FindElement(singInPage.ClickSubmitButton().WriteANewLetterButton).Displayed);
+            singInPage.PasswordInputElement.SendKeys(Keys.Enter);
+            this.driver = singInPage.Driver;
+            var wait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(3.0));
+            wait.Until(ExpectedConditions.ElementIsClickable(By.XPath("//div[contains(.,'Неверный')]")));
+            Assert.IsTrue(this.driver.FindElement(
+                By.XPath("//div[contains(.,'Неверный')]")).Displayed);
         }
 
         /// <summary>
@@ -67,14 +92,23 @@
         [TestMethod]
         public void EnterEmptyLoginTest()
         {
-            AboutPage aboutPage = new AboutPage(@"C:\SeleniumDriver");
-            this.driver = aboutPage.Driver;
-            this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-            SingInPage singInPage = aboutPage.SingIn();
+            GmailAboutPage aboutPage;
+            try
+            {
+                aboutPage = new GmailAboutPage(AppDomain.CurrentDomain.BaseDirectory);
+            }
+            catch (WebDriverException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            var singInPage = aboutPage.GoToSingInPage();
             singInPage.TypeLogin(Keys.Enter);
+            this.driver = singInPage.Driver;
             Assert.IsTrue(
                 this.driver.FindElement(By.XPath("//div[contains(.,'Введите')] | //div[contains(.,'Enter')]"))
-                    .Displayed);
+                    .Enabled);
         }
 
         /// <summary>
@@ -90,15 +124,24 @@
         [DataTestMethod]
         public void EnterEmptyPasswordTest(string login, string password)
         {
-            AboutPage aboutPage = new AboutPage(@"C:\SeleniumDriver");
-            this.driver = aboutPage.Driver;
-            this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-            SingInPage singInPage = aboutPage.SingIn();
+            GmailAboutPage aboutPage;
+            try
+            {
+                aboutPage = new GmailAboutPage(AppDomain.CurrentDomain.BaseDirectory);
+            }
+            catch (WebDriverException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            var singInPage = aboutPage.GoToSingInPage();
             singInPage.TypeLogin(login);
             singInPage.TypePassword(Keys.Enter);
+            this.driver = singInPage.Driver;
             Assert.IsTrue(
                 this.driver.FindElement(By.XPath("//div[contains(.,'Введите')] | //div[contains(.,'Enter')]"))
-                    .Displayed);
+                    .Enabled);
         }
     }
 }

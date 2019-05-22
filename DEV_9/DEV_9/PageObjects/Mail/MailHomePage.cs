@@ -2,14 +2,14 @@
 {
     using OpenQA.Selenium;
 
-    public class HomePage
+    public class MailHomePage
     {
         /// <summary>
         /// The driver.
         /// </summary>
         private IWebDriver driver;
 
-        public HomePage(IWebDriver driver)
+        public MailHomePage(IWebDriver driver)
         {
             this.driver = driver;
         }

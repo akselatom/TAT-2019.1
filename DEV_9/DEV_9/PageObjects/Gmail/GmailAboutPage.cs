@@ -29,11 +29,6 @@
         }
 
         /// <summary>
-        /// Gets login button element
-        /// </summary>
-        public IWebElement SingInButton { get; private set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GmailAboutPage"/> class.
         /// </summary>
         /// <param name="driver">
@@ -45,18 +40,23 @@
         }
 
         /// <summary>
+        /// Gets login button element
+        /// </summary>
+        public IWebElement SingInButton { get; private set; }
+
+        /// <summary>
         /// Gets a driver.
         /// </summary>
         public IWebDriver Driver { get; private set; }
 
         /// <summary>
-        /// Click sing in button
+        /// Navigate to sing in page
         /// </summary>
         /// <returns>
         /// The <see cref="GmailSingInPage"/>.
         /// </returns>
         public GmailSingInPage GoToSingInPage()
-        {    
+        {
             this.Driver.Navigate().GoToUrl(this.Driver.FindElement(this.singInButtonLocator).GetAttribute("href"));
             return new GmailSingInPage(this.Driver);
         }

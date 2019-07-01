@@ -13,7 +13,7 @@
         /// <summary>
         /// Gets the write a new letter button.
         /// </summary>
-        private By writeANewLetterButtonLocator = By.XPath("//div[@role ='button' and contains(., 'Написать')] ");
+        private By writeANewLetterButtonLocator = By.XPath("//div[@class ='aic']");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GmailHomePage"/> class.

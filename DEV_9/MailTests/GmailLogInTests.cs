@@ -34,21 +34,24 @@
         [DataTestMethod]
         public void LogInWithCorrectDataTest(string login, string password)
         {
-            GmailAboutPage aboutPage;
+            GmailAboutPage aboutPage = null;
             try
             {
                 aboutPage = new GmailAboutPage(AppDomain.CurrentDomain.BaseDirectory);
+                var singInPage = aboutPage.GoToSingInPage();
+                singInPage.InputLogin(login);
+                singInPage.TypePassword(password);
+                Assert.IsTrue(singInPage.GoToHomePage().WriteANewLetterButton.Enabled);
             }
             catch (WebDriverException e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-
-            var singInPage = aboutPage.GoToSingInPage();
-            singInPage.TypeLogin(login);
-            singInPage.TypePassword(password);
-            Assert.IsTrue(singInPage.GoToHomePage().WriteANewLetterButton.Enabled);
+            finally
+            {
+                aboutPage.Driver.Quit();;
+            }
         }
 
         /// <summary>
@@ -64,26 +67,29 @@
         [DataTestMethod]
         public void LogInWithWrongDataTest(string login, string password)
         {
-            GmailAboutPage aboutPage;
+            GmailAboutPage aboutPage = null;
             try
             {
                 aboutPage = new GmailAboutPage(AppDomain.CurrentDomain.BaseDirectory);
+                var singInPage = aboutPage.GoToSingInPage();
+                singInPage.InputLogin(login);
+                singInPage.TypePassword(password);
+                singInPage.PasswordInputElement.SendKeys(Keys.Enter);
+                this.driver = singInPage.Driver;
+                var wait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(3.0));
+                wait.Until(ExpectedConditions.ElementIsClickable(By.XPath("//div[contains(.,'Неверный')]")));
+                Assert.IsTrue(this.driver.FindElement(
+                    By.XPath("//div[contains(.,'Неверный')]")).Displayed);
             }
             catch (WebDriverException e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-
-            var singInPage = aboutPage.GoToSingInPage();
-            singInPage.TypeLogin(login);
-            singInPage.TypePassword(password);
-            singInPage.PasswordInputElement.SendKeys(Keys.Enter);
-            this.driver = singInPage.Driver;
-            var wait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(3.0));
-            wait.Until(ExpectedConditions.ElementIsClickable(By.XPath("//div[contains(.,'Неверный')]")));
-            Assert.IsTrue(this.driver.FindElement(
-                By.XPath("//div[contains(.,'Неверный')]")).Displayed);
+            finally
+            {
+                aboutPage.Driver.Quit(); ;
+            }
         }
 
         /// <summary>
@@ -92,23 +98,27 @@
         [TestMethod]
         public void EnterEmptyLoginTest()
         {
-            GmailAboutPage aboutPage;
+            GmailAboutPage aboutPage = null;
             try
             {
                 aboutPage = new GmailAboutPage(AppDomain.CurrentDomain.BaseDirectory);
+                var singInPage = aboutPage.GoToSingInPage();
+                singInPage.InputLogin(Keys.Enter);
+                this.driver = singInPage.Driver;
+                Assert.IsTrue(
+                    this.driver.FindElement(By.XPath("//div[contains(.,'Введите')] | //div[contains(.,'Enter')]"))
+                        .Enabled);
             }
             catch (WebDriverException e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+            finally
+            {
+                aboutPage.Driver.Quit();
+            }
 
-            var singInPage = aboutPage.GoToSingInPage();
-            singInPage.TypeLogin(Keys.Enter);
-            this.driver = singInPage.Driver;
-            Assert.IsTrue(
-                this.driver.FindElement(By.XPath("//div[contains(.,'Введите')] | //div[contains(.,'Enter')]"))
-                    .Enabled);
         }
 
         /// <summary>
@@ -124,24 +134,28 @@
         [DataTestMethod]
         public void EnterEmptyPasswordTest(string login, string password)
         {
-            GmailAboutPage aboutPage;
+            GmailAboutPage aboutPage = null;
             try
             {
                 aboutPage = new GmailAboutPage(AppDomain.CurrentDomain.BaseDirectory);
+                var singInPage = aboutPage.GoToSingInPage();
+                singInPage.InputLogin(login);
+                singInPage.TypePassword(Keys.Enter);
+                this.driver = singInPage.Driver;
+                Assert.IsTrue(
+                    this.driver.FindElement(By.XPath("//div[contains(.,'Введите')] | //div[contains(.,'Enter')]"))
+                        .Enabled);
             }
             catch (WebDriverException e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+            finally
+            {
+                aboutPage.Driver.Quit();
+            }
 
-            var singInPage = aboutPage.GoToSingInPage();
-            singInPage.TypeLogin(login);
-            singInPage.TypePassword(Keys.Enter);
-            this.driver = singInPage.Driver;
-            Assert.IsTrue(
-                this.driver.FindElement(By.XPath("//div[contains(.,'Введите')] | //div[contains(.,'Enter')]"))
-                    .Enabled);
         }
     }
 }

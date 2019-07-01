@@ -61,7 +61,7 @@ namespace DEV_9.PageObjects.Gmail
         public IWebDriver Driver { get; private set; }
 
         /// <summary>
-        /// Type login at login input field.
+        /// Type login at login input field and confirm it.
         /// </summary>
         /// <param name="login">
         /// The login.
@@ -69,7 +69,7 @@ namespace DEV_9.PageObjects.Gmail
         /// <returns>
         /// Updated <see cref="GmailSingInPage"/>.
         /// </returns>
-        public GmailSingInPage TypeLogin(string login)
+        public GmailSingInPage InputLogin(string login)
         {
             this.LoginInputElement.SendKeys(login);
             this.SubmitButtonElement.Click();
@@ -77,7 +77,7 @@ namespace DEV_9.PageObjects.Gmail
         }
 
         /// <summary>
-        /// The type password. at password input field
+        /// The type password at password input field
         /// </summary>
         /// <param name="password">
         /// The password.

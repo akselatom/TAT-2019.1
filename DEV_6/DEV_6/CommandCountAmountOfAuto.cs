@@ -8,14 +8,27 @@
     public class CommandCountAmountOfAuto : IConsoleCommand
     {
         /// <summary>
-        /// The execute <see cref="AutoDatabase"/> GetAmountOfAutomobiles() method.
+        /// The data.
+        /// </summary>
+        private readonly AutoDatabase data;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandCountAmountOfAuto"/> class.
         /// </summary>
         /// <param name="data">
         /// The data.
         /// </param>
-        public void Execute(AutoDatabase data)
+        public CommandCountAmountOfAuto(AutoDatabase data)
         {
-            Console.WriteLine("Amount of cars: {0}", data.GetAmountOfAutomobiles());
+            this.data = data;
+        }
+
+        /// <summary>
+        /// The execute <see cref="AutoDatabase"/> GetAmountOfAutomobiles() method.
+        /// </summary>
+        public void Execute()
+        {
+            Console.WriteLine("Amount of cars: {0}", this.data.GetAmountOfAutomobiles());
         }
     }
 }

@@ -3,7 +3,8 @@ namespace DEV_6
 {
     using System;
     using System.Collections.Generic;
-    using System.Xml;
+    using System.Linq;
+    using System.Xml.Linq;
 
     /// <summary>
     /// class working with xml-file witch contains information about car warehouse
@@ -20,8 +21,8 @@ namespace DEV_6
         {
             try
             {
-                this.XmlDoc = new XmlDocument();
-                this.XmlDoc.Load(fileName);
+                this.XDocument = XDocument.Load(fileName);
+
                 this.AutomobilesList = this.GetAutoListFromData();
             }
             catch (System.IO.FileNotFoundException)
@@ -33,7 +34,7 @@ namespace DEV_6
         /// <summary>
         /// Gets xml document witch contains information about car warehouse.
         /// </summary>
-        public XmlDocument XmlDoc { get; private set; }
+        public XDocument XDocument { get; private set; }
 
         /// <summary>
         /// Gets or sets the automobiles list.
@@ -41,7 +42,7 @@ namespace DEV_6
         public List<Automobile> AutomobilesList { get; set; }
 
         /// <summary>
-        /// Gets amount of brands in <see cref="XmlDoc"/>.
+        /// Gets amount of brands in <see cref="XDocument"/>.
         /// </summary>
         /// <returns>
         /// Amount of brands
@@ -61,7 +62,7 @@ namespace DEV_6
         }
 
         /// <summary>
-        /// The get amount of automobiles in <see cref="XmlDoc"/>
+        /// The get amount of automobiles in <see cref="XDocument"/>
         /// </summary>
         /// <returns>
         /// amount of automobiles.
@@ -109,65 +110,45 @@ namespace DEV_6
             var amountOfCars = 0;
             foreach (var automobile in this.AutomobilesList)
             {
-                if (automobile.BrandName != brandName)
+                if (automobile.BrandName == brandName)
                 {
-                    continue;
+                    price += automobile.Price * automobile.Count;
+                    amountOfCars += automobile.Count;
                 }
-
-                price += automobile.Price * automobile.Count;
-                amountOfCars += automobile.Count;
             }
 
             return price / (double)amountOfCars;
         }
 
         /// <summary>
-        /// The get auto list from <see cref="XmlDoc"/>.
+        /// The get auto list from <see cref="XDocument"/>.
         /// </summary>
         /// <returns>
         /// List of <see cref="Automobile"/>
         /// </returns>
         private List<Automobile> GetAutoListFromData()
         {
-            var autoList = new List<Automobile>();
-            if (this.XmlDoc.DocumentElement == null)
+            if (this.XDocument == null)
             {
                 return null;
             }
 
-            foreach (XmlNode node in this.XmlDoc.DocumentElement)
+            try
             {
-                var brand = string.Empty;
-                var model = string.Empty;
-                var count = 0;
-                var price = 0;
-                        
-                foreach (XmlNode childNode in node.ChildNodes)
-                {
-                    switch (childNode.Name)
-                    {
-                        case "brand":
-                            brand = childNode.InnerText;
-                            break;
-                        case "model":
-                            model = childNode.InnerText;
-                            break;
-                        case "count":
-                            count = int.Parse(childNode.InnerText);
-                            break;
-                        case "price":
-                            price = int.Parse(childNode.InnerText);
-                            break;
-                    }
-                }
+                var listOfVehicles = this.XDocument.Element("automobile").Elements("auto").Select(
+                    xe => new Automobile(
+                        brandName: xe.Element("brand").Value,
+                        modelName: xe.Element("model").Value,
+                        count: int.Parse(xe.Element("count").Value),
+                        price: int.Parse(xe.Element("price").Value)));
 
-                if (brand != string.Empty && model != string.Empty)
-                {
-                    autoList.Add(new Automobile(brand, model, count, price));
-                }
+                return listOfVehicles.ToList();
             }
-
-            return autoList;
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("error while reading xml file");
+                throw;
+            }
         }
     }
 }

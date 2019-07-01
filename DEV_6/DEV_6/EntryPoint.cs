@@ -20,7 +20,7 @@ namespace DEV_6
         {
             if (args.Length != 0 && args[0] != string.Empty)
             {
-                var userInterface = new CommandInvoker(args[0]);
+                var userInterface = new CommandInvoker(args[0], args[1]);
                 userInterface.ProvideUserInterface();
             }
             else

@@ -8,14 +8,27 @@
     public class CommandGetAveragePrice : IConsoleCommand
     {
         /// <summary>
-        /// count average price of cars in <see cref="AutoDatabase"/>
+        /// The data.
+        /// </summary>
+        private readonly AutoDatabase data;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandGetAveragePrice"/> class.
         /// </summary>
         /// <param name="data">
-        /// A <see cref="AutoDatabase"/> object.
+        /// The data.
         /// </param>
-        public void Execute(AutoDatabase data)
+        public CommandGetAveragePrice(AutoDatabase data)
         {
-            Console.WriteLine("Average Price of all cars: {0}", data.GetAveragePriceOfAllAutomobiles());
+            this.data = data;
+        }
+
+        /// <summary>
+        /// count average price of cars in <see cref="AutoDatabase"/>
+        /// </summary>
+        public void Execute()
+        {
+            Console.WriteLine("Average Price of all cars: {0}", this.data.GetAveragePriceOfAllAutomobiles());
         }
     }
 }

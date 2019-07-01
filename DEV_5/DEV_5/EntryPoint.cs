@@ -18,10 +18,14 @@ namespace DEV_5
         public static void Main(string[] args)
         {
             var flyables = new List<IFlyable> { new Bird(), new Plane(), new SpaceShip() };
+            var oX = 100;
+            var oY = 200;
+            var oZ = 800;
+            
             foreach (var flyable in flyables)
             {
                 flyable.ObjectFlew += ShowFlyTime;
-                flyable.FlyTo(new Point(new float[] { 100, 200, 800 }));
+                flyable.FlyTo(new Point(new float[] { oX, oY, oZ }));
             }
         }
 

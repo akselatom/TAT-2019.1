@@ -61,13 +61,14 @@ namespace DEV_5
         {
             var distance = this.distanceTraveled;
             double flyTime = 0;
+            const int PathSection = 10;
             while (true)
             {
-                if (distance > 10)
+                if (distance > PathSection)
                 {
-                    flyTime += 10.0 / this.speed;
-                    distance -= 10;
-                    this.speed += 10;
+                    flyTime += PathSection / (double)this.speed;
+                    distance -= PathSection;
+                    this.speed += PathSection;
                 }
                 else
                 {

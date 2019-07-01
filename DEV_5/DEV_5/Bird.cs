@@ -13,6 +13,10 @@
         /// </summary>
         private int speed;
 
+        private int minSpeed;
+
+        private int maxSpeed;
+
         /// <summary>
         /// The distance traveled.
         /// </summary>
@@ -30,7 +34,9 @@
         {
             this.currentPoint = new Point(new float[] { 0, 0, 0 });
             this.distanceTraveled = 0;
-            this.speed = new Random().Next(0, 21);
+            this.minSpeed = 0;
+            this.maxSpeed = 21;
+            this.speed = new Random().Next(this.minSpeed, this.maxSpeed);
         }
 
         /// <inheritdoc />

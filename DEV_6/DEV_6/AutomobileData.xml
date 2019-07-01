@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<automobile>
+  <auto>
+    <brand>Toyota</brand>
+    <model>Avensis</model>
+    <count>3</count>
+    <price>7000</price>
+  </auto>
+  <auto>
+    <brand>Nissan</brand>
+    <model>Qashqai</model>
+    <count>1</count>
+    <price>12900</price>
+  </auto>
+  <auto>
+    <brand>Mitsubishi</brand>
+    <model>ASX</model>
+    <count>2</count>
+    <price>12000</price>
+  </auto>
+  <auto>
+    <brand>Mazda</brand>
+    <model>CX-5</model>
+    <count>1</count>
+    <price>20500</price>
+  </auto>
+  <auto>
+    <brand>Nissan</brand>
+    <model>Almera</model>
+    <count>1</count>
+    <price>12800</price>
+  </auto>
+  <auto>
+    <brand>Lada</brand>
+    <model>2107</model>
+    <count>7</count>
+    <price>600</price>
+  </auto>
+</automobile>

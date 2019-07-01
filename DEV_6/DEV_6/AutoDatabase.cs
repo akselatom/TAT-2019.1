@@ -110,13 +110,11 @@ namespace DEV_6
             var amountOfCars = 0;
             foreach (var automobile in this.AutomobilesList)
             {
-                if (automobile.BrandName != brandName)
+                if (automobile.BrandName == brandName)
                 {
-                    continue;
+                    price += automobile.Price * automobile.Count;
+                    amountOfCars += automobile.Count;
                 }
-
-                price += automobile.Price * automobile.Count;
-                amountOfCars += automobile.Count;
             }
 
             return price / (double)amountOfCars;
@@ -143,6 +141,7 @@ namespace DEV_6
                         modelName: xe.Element("model").Value,
                         count: int.Parse(xe.Element("count").Value),
                         price: int.Parse(xe.Element("price").Value)));
+
                 return listOfVehicles.ToList();
             }
             catch (NullReferenceException)

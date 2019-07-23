@@ -4,7 +4,7 @@ namespace CW_3
     using System;
 
     /// <summary>
-    /// Entry point class.
+    /// Entry point class. Program build different triangles implementation of which is built on chain responsibility.
     /// </summary>
     public class Program
     {

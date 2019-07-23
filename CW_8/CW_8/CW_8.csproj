@@ -42,7 +42,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WebDriver">
-      <HintPath>..\packages\Selenium.WebDriver.4.0.0-alpha01\lib\net47\WebDriver.dll</HintPath>
+      <HintPath>..\packages\Selenium.WebDriver.3.0.0\lib\net40\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver.Support">
       <HintPath>..\packages\Selenium.Support.4.0.0-alpha01\lib\net47\WebDriver.Support.dll</HintPath>

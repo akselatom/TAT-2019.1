@@ -6,7 +6,7 @@ namespace CW_5
     using System.Linq;
 
     /// <summary>
-    /// The program.
+    /// The program. Development using <see cref="System.Linq"/> and static class extensions. 
     /// </summary>
     public class Program
     {

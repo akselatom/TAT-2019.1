@@ -1,6 +1,7 @@
 ﻿
 namespace DEV_2
 {
+    using System;
     using System.Linq;
     using System.Text;
 
@@ -10,58 +11,68 @@ namespace DEV_2
     public class StringLettersToSoundReplacer
     {
         /// <summary>
-        /// The replacement unstressed o.
+        /// Processed string
+        /// </summary>
+        private string inputString;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringLettersToSoundReplacer"/> class.
         /// </summary>
         /// <param name="inputString">
         /// The input string.
         /// </param>
+        public StringLettersToSoundReplacer(string inputString)
+        {
+            if (this.CheckCorrectInputString(inputString))
+            {
+                this.inputString = inputString.ToLower();
+            }
+        }
+
+        /// <summary>
+        /// The replacement unstressed o.
+        /// </summary>
         /// <returns>
         /// Returns string were all unstressed O replaced by A
         /// </returns>
-        public string ReplacementUnstressedO(string inputString)
+        public string ReplacementUnstressedO()
         {
-            inputString = inputString.Replace('о', 'а');
-            inputString = inputString.Replace("а+", "о+");
-            inputString = inputString.Replace("+", string.Empty);
+            this.inputString = this.inputString.Replace('о', 'а');
+            this.inputString = this.inputString.Replace("а+", "о+");
+            this.inputString = this.inputString.Replace("+", string.Empty);
 
-            return inputString;
+            return this.inputString;
         }
 
         /// <summary>
         /// a method that replaces soft consonants with their phonemes
         /// </summary>
-        /// <param name="inputString">
-        /// The input string.
-        /// </param>
         /// <returns>
         /// Returns string were all soft consonants replaced with their phonemes.
         /// </returns>
-        public string SofteningConsonants(string inputString)
+        public string SofteningConsonants()
         {
             foreach (var keys in RussianDictionary.AllSoftSounds.Keys)
             {
-                if (inputString.Contains(keys))
+                if (this.inputString.Contains(keys))
                 {
-                    string replaceString = RussianDictionary.AllSoftSounds[keys];
-                    inputString = inputString.Replace(keys, replaceString);
+                    var replaceString = RussianDictionary.AllSoftSounds[keys];
+                    this.inputString = this.inputString.Replace(keys, replaceString);
                 }
             }
 
-            return inputString;
+            return this.inputString;
         }
 
         /// <summary>
         /// The processing vowels into sounds.
         /// </summary>
-        /// <param name="inputString">
-        /// The input string.
-        /// </param>
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public string ProcessingVowelsIntoSounds(string inputString)
+        public string ProcessingVowelsIntoSounds()
         {
-            string tempString = this.FirstLetterToUpperCase(inputString);
+            string tempString = this.FirstLetterToUpperCase();
             bool firstIteration = true;
             foreach (var keys in RussianDictionary.VowelsLettersToPhoneticSounds.Keys)
             {
@@ -79,35 +90,73 @@ namespace DEV_2
                 }
             }
 
-            return tempString;
+            return tempString.ToLower();
         }
 
         /// <summary>
         /// A method that stuns or voices paired consonants in a string.
         /// </summary>
-        /// <param name="inputString">
-        /// The input string.
-        /// </param>
         /// <returns>
         /// Returns the string with the completed conversion
         /// </returns>
-        public string VoicingOrStunningConsonantsReplacer(string inputString)
+        public string VoicingOrStunningConsonantsReplacer()
         {
-            StringBuilder outputString = new StringBuilder(inputString);
+            StringBuilder outputString = new StringBuilder(this.inputString);
             for (int i = 0; i < outputString.Length; i++)
             {
                 outputString = this.StunningConsonantReplacer(outputString, i);
                 outputString = this.VoicingConsonantReplacer(outputString, i);
             }
 
-            inputString = outputString.ToString();
-            return inputString;
+            this.inputString = outputString.ToString();
+            return this.inputString;
+        }
+
+        /// <summary>
+        /// The check correct input string.
+        /// </summary>
+        /// <param name="inputWord">
+        /// The input word.
+        /// </param>
+        /// <returns>
+        /// Returns true if input string is correct
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Throws Exception if input string is too short or have unacceptable symbols
+        /// </exception>
+        public bool CheckCorrectInputString(string inputWord)
+        {
+            if (inputWord.Length < 2)
+            {
+                throw new ArgumentException("Too short input word.");
+            }
+
+            var numberOfAccents = 0;
+            foreach (var letter in inputWord)
+            {
+                if ((letter < 'а' || letter > 'я') && (letter < 'А' || letter > 'Я') && letter != '+')
+                {
+                    throw new ArgumentException("only Russian letters and the '+' symbol are allowed.");
+                }
+
+                if (letter == '+')
+                {
+                    numberOfAccents++;
+                }
+            }
+
+            if (numberOfAccents > 1)
+            {
+                throw new ArgumentException("Using more than one '+' symbol!");
+            }
+
+            return true;
         }
 
         /// <summary>
         ///  Checks a letter for stunning case
         /// </summary>
-        /// <param name="inputString">
+        /// <param name="inputStringBuilder">
         /// The input string.
         /// </param>
         /// <param name="letterInd">
@@ -116,31 +165,31 @@ namespace DEV_2
         /// <returns>
         /// Returns the string with the completed conversion
         /// </returns>
-        private StringBuilder StunningConsonantReplacer(StringBuilder inputString, int letterInd)
+        private StringBuilder StunningConsonantReplacer(StringBuilder inputStringBuilder, int letterInd)
         {
             const string AllVoicingConsonants = "бгджзлмнрй";
-            if (letterInd == inputString.Length - 1)
+            if (letterInd == inputStringBuilder.Length - 1)
             {
-                return inputString;
+                return inputStringBuilder;
             }
 
-            if (RussianDictionary.VoicingAndStunningConsonants.ContainsValue(inputString[letterInd]))
+            if (RussianDictionary.VoicingAndStunningConsonants.ContainsValue(inputStringBuilder[letterInd]))
             {
-                var changeableConsonant = inputString[letterInd];
-                if (AllVoicingConsonants.Contains(inputString[letterInd + 1]))
+                var changeableConsonant = inputStringBuilder[letterInd];
+                if (AllVoicingConsonants.Contains(inputStringBuilder[letterInd + 1]))
                 {
-                    var myKey = RussianDictionary.VoicingAndStunningConsonants.FirstOrDefault(x => x.Value == inputString[letterInd]).Key;
-                    inputString.Replace(changeableConsonant, myKey, letterInd, 1);
+                    var myKey = RussianDictionary.VoicingAndStunningConsonants.FirstOrDefault(x => x.Value == inputStringBuilder[letterInd]).Key;
+                    inputStringBuilder.Replace(changeableConsonant, myKey, letterInd, 1);
                 }
             }
 
-            return inputString;
+            return inputStringBuilder;
         }
 
         /// <summary>
         /// Checks a letter for voicing case
         /// </summary>
-        /// <param name="inputString">
+        /// <param name="inputStringBuilder">
         /// The input string.
         /// </param>
         /// <param name="letterInd">
@@ -149,41 +198,38 @@ namespace DEV_2
         /// <returns>
         /// Returns the string with the completed conversion
         /// </returns>
-        private StringBuilder VoicingConsonantReplacer(StringBuilder inputString, int letterInd)
+        private StringBuilder VoicingConsonantReplacer(StringBuilder inputStringBuilder, int letterInd)
         {
             const string AllStunningConsonants = "пфктшсчцчщ";
 
-            if (RussianDictionary.VoicingAndStunningConsonants.ContainsKey(inputString[letterInd]))
+            if (RussianDictionary.VoicingAndStunningConsonants.ContainsKey(inputStringBuilder[letterInd]))
             {
-                var changeableConsonant = inputString[letterInd];
-                if (letterInd == inputString.Length - 1)
+                var changeableConsonant = inputStringBuilder[letterInd];
+                if (letterInd == inputStringBuilder.Length - 1)
                 {
                     var myKey = RussianDictionary.VoicingAndStunningConsonants[changeableConsonant];
-                    inputString.Replace(changeableConsonant, myKey, letterInd, 1);
+                    inputStringBuilder.Replace(changeableConsonant, myKey, letterInd, 1);
                 }
-                else if (AllStunningConsonants.Contains(inputString[letterInd + 1]))
+                else if (AllStunningConsonants.Contains(inputStringBuilder[letterInd + 1]))
                 {
                     var myKey = RussianDictionary.VoicingAndStunningConsonants[changeableConsonant];
-                    inputString.Replace(changeableConsonant, myKey, letterInd, 1);
+                    inputStringBuilder.Replace(changeableConsonant, myKey, letterInd, 1);
                 }
             }
 
-            return inputString;
+            return inputStringBuilder;
         }
 
         /// <summary>
         /// Changes first letter to upper case. Necessary for the correct operation of the <see cref="ProcessingVowelsIntoSounds"/>
-        /// in case the vowel comes first
+        /// in case when vowel comes first
         /// </summary>
-        /// <param name="inputString">
-        /// The input string.
-        /// </param>
         /// <returns>
         /// returns a string with a capital letter
         /// </returns>
-        private string FirstLetterToUpperCase(string inputString)
+        private string FirstLetterToUpperCase()
         {
-            return inputString.Remove(1, inputString.Length - 1).ToUpper() + inputString.Remove(0, 1);
+            return this.inputString.Remove(1, this.inputString.Length - 1).ToUpper() + this.inputString.Remove(0, 1);
         }
     }
 }
